@@ -115,8 +115,8 @@
           <div class="text-gray-500 text-sm mt-1">Years in NOC / Ops</div>
         </div>
         <div class="border border-gray-800 rounded-lg p-4">
-          <div class="text-3xl font-bold text-indigo-400">2</div>
-          <div class="text-gray-500 text-sm mt-1">Industry Certifications</div>
+          <div class="text-3xl font-bold text-indigo-400">2+</div>
+          <div class="text-gray-500 text-sm mt-1">AI Apps Shipped</div>
         </div>
         <div class="border border-gray-800 rounded-lg p-4">
           <div class="text-3xl font-bold text-emerald-400">5+</div>
@@ -260,16 +260,112 @@
         </div>
       </div>
 
-      <!-- Coming soon cards -->
+      <!-- App 2 — AlgoTrader -->
+      <div class="border border-gray-700 hover:border-indigo-500/50 rounded-xl p-8 transition card-glow mb-6 bg-gray-900/50">
+        <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+          <div>
+            <div class="flex items-center gap-3 mb-2">
+              <span class="px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-xs font-medium rounded-full border border-indigo-500/30">
+                ● Paper Trading
+              </span>
+              <span class="px-2 py-0.5 bg-sky-500/20 text-sky-400 text-xs font-medium rounded-full border border-sky-500/30">
+                App #2
+              </span>
+            </div>
+            <h3 class="text-xl font-bold text-white">AlgoTrader — AI-Powered Trading Bot</h3>
+            <p class="text-gray-400 text-sm mt-1">Automated stock &amp; options trading with 5 strategies, deployed on Railway</p>
+          </div>
+          <div class="flex gap-3">
+            <a href="https://github.com/Darkaiser2" target="_blank" rel="noopener"
+               class="px-4 py-2 border border-gray-700 hover:border-gray-500 text-gray-400 hover:text-gray-200 text-sm font-semibold rounded-lg transition">
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <p class="text-gray-300 mb-6 leading-relaxed">
+          A fully automated trading bot that runs 24/7 on Railway cloud. Executes 5 concurrent strategies
+          — SPY weekly swing trades, RSI-based gold &amp; AI stock basket, plus options strategies including
+          long straddles, calendar spreads, and iron butterflies. Idle cash is automatically reinvested
+          so money is always working. Built on the Alpaca Trading API with Options Level 3 approval.
+        </p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          <div class="bg-gray-800/50 rounded-lg p-3 text-center">
+            <div class="text-indigo-400 font-semibold text-sm">5 Strategies</div>
+            <div class="text-gray-500 text-xs">Equity + Options</div>
+          </div>
+          <div class="bg-gray-800/50 rounded-lg p-3 text-center">
+            <div class="text-indigo-400 font-semibold text-sm">24/7 Cloud</div>
+            <div class="text-gray-500 text-xs">Runs on Railway</div>
+          </div>
+          <div class="bg-gray-800/50 rounded-lg p-3 text-center">
+            <div class="text-indigo-400 font-semibold text-sm">RSI + Options</div>
+            <div class="text-gray-500 text-xs">Straddles, Butterflies</div>
+          </div>
+          <div class="bg-gray-800/50 rounded-lg p-3 text-center">
+            <div class="text-indigo-400 font-semibold text-sm">Auto-Reinvest</div>
+            <div class="text-gray-500 text-xs">Zero idle cash</div>
+          </div>
+        </div>
+
+        <!-- Strategies breakdown -->
+        <div class="bg-gray-800/30 border border-gray-800 rounded-lg p-4 mb-6">
+          <div class="mono text-xs text-gray-600 mb-3">active_strategies.json</div>
+          <div class="grid md:grid-cols-2 gap-2 text-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-sky-400 flex-shrink-0"></span>
+              <span class="text-gray-300">SPY Weekly Swing</span>
+              <span class="text-gray-600 text-xs ml-auto">Buy Mon / Sell Fri</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"></span>
+              <span class="text-gray-300">RSI Gold &amp; AI Basket</span>
+              <span class="text-gray-600 text-xs ml-auto">RSI &lt;35 buy / &gt;65 sell</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-purple-400 flex-shrink-0"></span>
+              <span class="text-gray-300">Long Straddle</span>
+              <span class="text-gray-600 text-xs ml-auto">ATM call + put (NVDA/AMD)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0"></span>
+              <span class="text-gray-300">Calendar Spread</span>
+              <span class="text-gray-600 text-xs ml-auto">Theta decay on SPY</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rose-400 flex-shrink-0"></span>
+              <span class="text-gray-300">Iron Butterfly</span>
+              <span class="text-gray-600 text-xs ml-auto">Neutral SPY credit spread</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-indigo-400 flex-shrink-0"></span>
+              <span class="text-gray-300">Auto-Reinvestment</span>
+              <span class="text-gray-600 text-xs ml-auto">VTI parking for idle cash</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <span class="mono text-xs px-2 py-1 bg-gray-800 rounded text-gray-400">Node.js</span>
+          <span class="mono text-xs px-2 py-1 bg-gray-800 rounded text-gray-400">Alpaca API</span>
+          <span class="mono text-xs px-2 py-1 bg-gray-800 rounded text-gray-400">Options Level 3</span>
+          <span class="mono text-xs px-2 py-1 bg-gray-800 rounded text-gray-400">RSI / Wilder</span>
+          <span class="mono text-xs px-2 py-1 bg-gray-800 rounded text-gray-400">Railway Cron</span>
+          <span class="mono text-xs px-2 py-1 bg-gray-800 rounded text-gray-400">Multi-leg Orders</span>
+        </div>
+      </div>
+
+      <!-- Coming soon card -->
       <div class="grid md:grid-cols-2 gap-4">
         <div class="border border-dashed border-gray-700 rounded-xl p-6 opacity-50">
           <span class="px-2 py-0.5 bg-gray-700 text-gray-400 text-xs font-medium rounded-full">Coming Soon</span>
-          <h3 class="text-lg font-semibold text-gray-300 mt-3 mb-2">App #2</h3>
-          <p class="text-gray-500 text-sm">Next tool in the NOC AI platform. In planning.</p>
+          <h3 class="text-lg font-semibold text-gray-300 mt-3 mb-2">App #3</h3>
+          <p class="text-gray-500 text-sm">More tools in the NOC AI platform. In progress.</p>
         </div>
         <div class="border border-dashed border-gray-700 rounded-xl p-6 opacity-50">
           <span class="px-2 py-0.5 bg-gray-700 text-gray-400 text-xs font-medium rounded-full">Coming Soon</span>
-          <h3 class="text-lg font-semibold text-gray-300 mt-3 mb-2">App #3</h3>
+          <h3 class="text-lg font-semibold text-gray-300 mt-3 mb-2">App #4</h3>
           <p class="text-gray-500 text-sm">More to come as the platform grows.</p>
         </div>
       </div>
