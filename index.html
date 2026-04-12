@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jonathan Campos — Network Engineer & AI Builder</title>
   <meta name="description" content="10 years in enterprise NOC operations. Now building AI tools that make network engineers faster." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='4' fill='%2338bdf8'/%3E%3Ccircle cx='5' cy='5' r='3' fill='%23818cf8'/%3E%3Ccircle cx='27' cy='5' r='3' fill='%23818cf8'/%3E%3Ccircle cx='5' cy='27' r='3' fill='%23818cf8'/%3E%3Ccircle cx='27' cy='27' r='3' fill='%23818cf8'/%3E%3Cline x1='7.5' y1='7.5' x2='13' y2='13' stroke='%2338bdf8' stroke-width='1.5' opacity='0.7'/%3E%3Cline x1='24.5' y1='7.5' x2='19' y2='13' stroke='%2338bdf8' stroke-width='1.5' opacity='0.7'/%3E%3Cline x1='7.5' y1='24.5' x2='13' y2='19' stroke='%23818cf8' stroke-width='1.5' opacity='0.7'/%3E%3Cline x1='24.5' y1='24.5' x2='19' y2='19' stroke='%23818cf8' stroke-width='1.5' opacity='0.7'/%3E%3C/svg%3E" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -53,6 +54,96 @@
         linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
       background-size: 40px 40px;
     }
+
+    /* Logo node pulse */
+    @keyframes nodePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+    .logo-center { animation: nodePulse 2.5s ease-in-out infinite; }
+
+    /* ── Floating Music Button ── */
+    #music-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 100;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      outline: none;
+    }
+    #music-btn:hover {
+      border-color: rgba(56, 189, 248, 0.7);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.2);
+    }
+    #music-btn.playing {
+      border-color: rgba(56, 189, 248, 0.8);
+      animation: musicPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes musicPulse {
+      0%   { box-shadow: 0 0 0 0   rgba(56, 189, 248, 0.4); }
+      70%  { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0);   }
+      100% { box-shadow: 0 0 0 0   rgba(56, 189, 248, 0);   }
+    }
+
+    #music-tooltip {
+      position: fixed;
+      bottom: 90px;
+      right: 28px;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #94a3b8;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    #music-btn:hover + #music-tooltip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Animated wave bars shown while playing */
+    .wave-bars {
+      display: none;
+      align-items: flex-end;
+      gap: 2px;
+      height: 18px;
+    }
+    .wave-bar {
+      width: 3px;
+      border-radius: 2px;
+      background: currentColor;
+      transform-origin: bottom;
+    }
+    #music-btn.playing .wave-bars { display: flex; }
+    #music-btn.playing .play-icon  { display: none; }
+    .play-icon { display: block; }
+
+    .wave-bar:nth-child(1) { height: 8px;  animation: waveAnim 0.8s 0s    ease-in-out infinite alternate; }
+    .wave-bar:nth-child(2) { height: 14px; animation: waveAnim 0.8s 0.15s ease-in-out infinite alternate; }
+    .wave-bar:nth-child(3) { height: 6px;  animation: waveAnim 0.8s 0.3s  ease-in-out infinite alternate; }
+    .wave-bar:nth-child(4) { height: 11px; animation: waveAnim 0.8s 0.1s  ease-in-out infinite alternate; }
+    @keyframes waveAnim {
+      from { transform: scaleY(0.25); }
+      to   { transform: scaleY(1); }
+    }
   </style>
 </head>
 <body class="bg-gray-950 text-gray-100">
@@ -60,12 +151,31 @@
   <!-- NAV -->
   <nav class="fixed top-0 w-full z-50 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50">
     <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-      <span class="mono text-sky-400 font-medium text-sm">jonathan.campos</span>
+
+      <!-- Logo mark + wordmark -->
+      <a href="#" class="flex items-center gap-2.5 group">
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- outer nodes -->
+          <circle cx="5"  cy="5"  r="2.5" fill="#818cf8" opacity="0.9"/>
+          <circle cx="27" cy="5"  r="2.5" fill="#818cf8" opacity="0.9"/>
+          <circle cx="5"  cy="27" r="2.5" fill="#818cf8" opacity="0.9"/>
+          <circle cx="27" cy="27" r="2.5" fill="#818cf8" opacity="0.9"/>
+          <!-- connecting lines -->
+          <line x1="7.2"  y1="7.2"  x2="12.8" y2="12.8" stroke="#38bdf8" stroke-width="1.2" opacity="0.5"/>
+          <line x1="24.8" y1="7.2"  x2="19.2" y2="12.8" stroke="#38bdf8" stroke-width="1.2" opacity="0.5"/>
+          <line x1="7.2"  y1="24.8" x2="12.8" y2="19.2" stroke="#818cf8" stroke-width="1.2" opacity="0.5"/>
+          <line x1="24.8" y1="24.8" x2="19.2" y2="19.2" stroke="#818cf8" stroke-width="1.2" opacity="0.5"/>
+          <!-- centre node (pulsing) -->
+          <circle class="logo-center" cx="16" cy="16" r="4" fill="#38bdf8"/>
+        </svg>
+        <span class="mono text-sky-400 font-medium text-sm group-hover:text-sky-300 transition">jonathan.campos</span>
+      </a>
+
       <div class="flex gap-6 text-sm text-gray-400">
-        <a href="#about" class="hover:text-sky-400 transition">About</a>
-        <a href="#projects" class="hover:text-sky-400 transition">Projects</a>
+        <a href="#about"      class="hover:text-sky-400 transition">About</a>
+        <a href="#projects"   class="hover:text-sky-400 transition">Projects</a>
         <a href="#experience" class="hover:text-sky-400 transition">Experience</a>
-        <a href="#contact" class="hover:text-sky-400 transition">Contact</a>
+        <a href="#contact"    class="hover:text-sky-400 transition">Contact</a>
       </div>
     </div>
   </nav>
@@ -356,7 +466,7 @@
         </div>
       </div>
 
-      <!-- Coming soon card -->
+      <!-- Coming soon cards -->
       <div class="grid md:grid-cols-2 gap-4">
         <div class="border border-dashed border-gray-700 rounded-xl p-6 opacity-50">
           <span class="px-2 py-0.5 bg-gray-700 text-gray-400 text-xs font-medium rounded-full">Coming Soon</span>
@@ -379,7 +489,6 @@
       <h2 class="text-3xl font-bold mb-12">Where I've Worked</h2>
 
       <div class="relative pl-6 border-l border-gray-800">
-        <!-- Employer -->
         <div class="mb-12 relative">
           <div class="absolute -left-[25px] w-3 h-3 rounded-full bg-sky-400 border-2 border-gray-950"></div>
           <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
@@ -477,6 +586,121 @@
       <span>Built from scratch. Like everything else.</span>
     </div>
   </footer>
+
+  <!-- ── Floating Ambient Music Button ─────────────────────────────────────── -->
+  <button id="music-btn" title="Toggle ambient sound" aria-label="Toggle ambient sound">
+    <svg class="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <span class="wave-bars" aria-hidden="true">
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+    </span>
+  </button>
+  <div id="music-tooltip">ambient // click to play</div>
+
+  <script>
+    // Generative ambient drone via Web Audio API — no audio file needed.
+    // Soft minor-pentatonic pad (A2–E4) with reverb and slow LFO movement.
+    const musicBtn = document.getElementById('music-btn');
+    const tooltip  = document.getElementById('music-tooltip');
+    let audioCtx = null, masterGain = null;
+    let oscillators = [], lfos = [];
+    let playing = false;
+
+    function makeImpulse(ctx, duration, decay) {
+      const len = ctx.sampleRate * duration;
+      const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+      for (let ch = 0; ch < 2; ch++) {
+        const d = buf.getChannelData(ch);
+        for (let i = 0; i < len; i++)
+          d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+      }
+      return buf;
+    }
+
+    function startAmbient() {
+      audioCtx   = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.13, audioCtx.currentTime + 3);
+      masterGain.connect(audioCtx.destination);
+
+      // Reverb send
+      const conv      = audioCtx.createConvolver();
+      conv.buffer     = makeImpulse(audioCtx, 3.5, 2.2);
+      const revGain   = audioCtx.createGain();
+      revGain.gain.value = 0.38;
+      conv.connect(revGain);
+      revGain.connect(masterGain);
+
+      // A-minor pentatonic pad: A2 E3 A3 C4 E4 + sub A1
+      const layers = [
+        { freq: 55,     type: 'sine',     vol: 0.09,  lfoHz: 0.04, lfoDepth: 0.3  }, // sub
+        { freq: 110,    type: 'sine',     vol: 0.20,  lfoHz: 0.07, lfoDepth: 0.5  },
+        { freq: 164.81, type: 'triangle', vol: 0.13,  lfoHz: 0.05, lfoDepth: 0.7  },
+        { freq: 220,    type: 'sine',     vol: 0.11,  lfoHz: 0.09, lfoDepth: 0.4  },
+        { freq: 261.63, type: 'triangle', vol: 0.07,  lfoHz: 0.06, lfoDepth: 0.6  },
+        { freq: 329.63, type: 'sine',     vol: 0.05,  lfoHz: 0.11, lfoDepth: 0.5  },
+      ];
+
+      layers.forEach(({ freq, type, vol, lfoHz, lfoDepth }) => {
+        const osc    = audioCtx.createOscillator();
+        const gain   = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+        const lfo    = audioCtx.createOscillator();
+        const lfoG   = audioCtx.createGain();
+
+        osc.type          = type;
+        osc.frequency.value = freq;
+        gain.gain.value   = vol;
+        filter.type       = 'lowpass';
+        filter.frequency.value = 1100;
+        filter.Q.value    = 0.9;
+
+        lfo.frequency.value = lfoHz;
+        lfoG.gain.value     = lfoDepth;
+        lfo.connect(lfoG);
+        lfoG.connect(osc.frequency);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(masterGain);
+        gain.connect(conv);   // send to reverb
+
+        osc.start(); lfo.start();
+        oscillators.push(osc); lfos.push(lfo);
+      });
+    }
+
+    function stopAmbient() {
+      if (!masterGain) return;
+      const t = audioCtx.currentTime;
+      masterGain.gain.linearRampToValueAtTime(0, t + 2);
+      setTimeout(() => {
+        [...oscillators, ...lfos].forEach(n => { try { n.stop(); } catch(_) {} });
+        audioCtx.close();
+        audioCtx = masterGain = null;
+        oscillators = []; lfos = [];
+      }, 2300);
+    }
+
+    musicBtn.addEventListener('click', () => {
+      if (!playing) {
+        startAmbient();
+        playing = true;
+        musicBtn.classList.add('playing');
+        tooltip.textContent = 'ambient // playing';
+      } else {
+        stopAmbient();
+        playing = false;
+        musicBtn.classList.remove('playing');
+        tooltip.textContent = 'ambient // click to play';
+      }
+    });
+  </script>
 
 </body>
 </html>
