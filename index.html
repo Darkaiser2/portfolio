@@ -305,6 +305,53 @@
     .logo-center { animation: nodePulse 2s ease-in-out infinite; }
 
 
+    /* ── Enter Overlay ── */
+    #enter-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity .6s ease;
+    }
+    #enter-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #enter-overlay .enter-ring {
+      width: 120px; height: 120px;
+      border: 1px solid rgba(0,245,255,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 32px;
+      animation: ringPulse 2s ease-in-out infinite;
+    }
+    @keyframes ringPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(0,245,255,0.25); border-color: rgba(0,245,255,0.3); }
+      50%      { box-shadow: 0 0 0 18px rgba(0,245,255,0); border-color: rgba(0,245,255,0.7); }
+    }
+    #enter-overlay .enter-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: var(--cyan);
+      text-shadow: 0 0 12px var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    #enter-overlay .enter-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #334455;
+      text-transform: uppercase;
+    }
+
     /* ── Radio Player ── */
     #radio-widget {
       position: fixed;
@@ -439,6 +486,21 @@
     </div>
   </div>
 </nav>
+
+<!-- ── ENTER OVERLAY ─────────────────────────────────────────────────── -->
+<div id="enter-overlay">
+  <div class="enter-ring">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00f5ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 8px #00f5ff)">
+      <path d="M4.9 4.9a9.5 9.5 0 0 0 0 14.2"/>
+      <path d="M19.1 4.9a9.5 9.5 0 0 1 0 14.2"/>
+      <path d="M7.8 7.8a6 6 0 0 0 0 8.4"/>
+      <path d="M16.2 7.8a6 6 0 0 1 0 8.4"/>
+      <circle cx="12" cy="12" r="1.5" fill="#00f5ff"/>
+    </svg>
+  </div>
+  <div class="enter-label">Click to Enter</div>
+  <div class="enter-sub">Ritmo Romántica · Lima, Peru</div>
+</div>
 
 <!-- ── HERO ─────────────────────────────────────────────────────── -->
 <section id="hero" class="cyber-grid" style="min-height:100vh; display:flex; align-items:center; padding-top:80px;">
@@ -891,16 +953,13 @@ radioBtn.addEventListener('click', () => {
   radioLive ? stopRadio() : startRadio();
 });
 
-// Autoplay on first user interaction (browser autoplay policy requires a gesture)
-function autoPlayOnce() {
+// Enter overlay — click dismisses it and starts the radio (satisfies browser autoplay policy)
+const enterOverlay = document.getElementById('enter-overlay');
+enterOverlay.addEventListener('click', () => {
+  enterOverlay.classList.add('fade-out');
+  enterOverlay.addEventListener('transitionend', () => enterOverlay.remove(), { once: true });
   startRadio();
-  document.removeEventListener('click',      autoPlayOnce);
-  document.removeEventListener('keydown',    autoPlayOnce);
-  document.removeEventListener('touchstart', autoPlayOnce);
-}
-document.addEventListener('click',      autoPlayOnce);
-document.addEventListener('keydown',    autoPlayOnce);
-document.addEventListener('touchstart', autoPlayOnce);
+});
 </script>
 
 </body>
