@@ -305,7 +305,7 @@
     .logo-center { animation: nodePulse 2s ease-in-out infinite; }
 
 
-    /* ── Enter Overlay ── */
+    /* ── Enter Overlay / Splash ── */
     #enter-overlay {
       position: fixed;
       inset: 0;
@@ -316,39 +316,70 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: opacity .6s ease;
+      overflow: hidden;
+      transition: opacity .8s ease;
     }
-    #enter-overlay.fade-out {
-      opacity: 0;
-      pointer-events: none;
+    #enter-overlay.fade-out { opacity: 0; pointer-events: none; }
+    #splash-canvas {
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
     }
-    #enter-overlay .enter-ring {
-      width: 120px; height: 120px;
-      border: 1px solid rgba(0,245,255,0.3);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 32px;
-      animation: ringPulse 2s ease-in-out infinite;
+    .splash-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
     }
-    @keyframes ringPulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(0,245,255,0.25); border-color: rgba(0,245,255,0.3); }
-      50%      { box-shadow: 0 0 0 18px rgba(0,245,255,0); border-color: rgba(0,245,255,0.7); }
+    .splash-logo {
+      animation: splashLogoGlow 3s ease-in-out infinite;
+      margin-bottom: 28px;
     }
-    #enter-overlay .enter-label {
+    @keyframes splashLogoGlow {
+      0%,100% { filter: drop-shadow(0 0 8px #00f5ff) drop-shadow(0 0 24px rgba(0,245,255,0.3)); }
+      50%      { filter: drop-shadow(0 0 20px #00f5ff) drop-shadow(0 0 60px rgba(0,245,255,0.5)); }
+    }
+    .splash-name {
       font-family: 'Orbitron', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 6px;
-      color: var(--cyan);
-      text-shadow: 0 0 12px var(--cyan);
-      text-transform: uppercase;
-      margin-bottom: 10px;
+      font-size: clamp(1.6rem, 5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: 8px;
+      color: #e0eef8;
+      margin-bottom: 6px;
     }
-    #enter-overlay .enter-sub {
+    .splash-title {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
+      font-size: 11px;
+      letter-spacing: 4px;
       color: #334455;
+      text-transform: uppercase;
+      margin-bottom: 52px;
+    }
+    .splash-enter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan);
+      text-transform: uppercase;
+      border: 1px solid rgba(0,245,255,0.35);
+      padding: 12px 32px;
+      animation: enterBlink 2s ease-in-out infinite;
+      clip-path: polygon(10px 0%, 100% 0%, 100% 100%, calc(100% - 10px) 100%, 0% 100%, 0% 0%);
+    }
+    @keyframes enterBlink {
+      0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,245,255,0.3); }
+      50%      { opacity: 0.6; box-shadow: 0 0 20px rgba(0,245,255,0.15); }
+    }
+    .splash-radio-hint {
+      margin-top: 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #223344;
       text-transform: uppercase;
     }
 
@@ -487,19 +518,23 @@
   </div>
 </nav>
 
-<!-- ── ENTER OVERLAY ─────────────────────────────────────────────────── -->
+<!-- ── SPLASH / ENTER OVERLAY ────────────────────────────────────── -->
 <div id="enter-overlay">
-  <div class="enter-ring">
-    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00f5ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 8px #00f5ff)">
-      <path d="M4.9 4.9a9.5 9.5 0 0 0 0 14.2"/>
-      <path d="M19.1 4.9a9.5 9.5 0 0 1 0 14.2"/>
-      <path d="M7.8 7.8a6 6 0 0 0 0 8.4"/>
-      <path d="M16.2 7.8a6 6 0 0 1 0 8.4"/>
-      <circle cx="12" cy="12" r="1.5" fill="#00f5ff"/>
+  <canvas id="splash-canvas"></canvas>
+  <div class="splash-content">
+    <!-- Large Sagittarius logo -->
+    <svg class="splash-logo" width="110" height="110" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="6" y1="26" x2="26" y2="6" stroke="#00f5ff" stroke-width="2.2" stroke-linecap="round"/>
+      <polygon points="26,6 17,8 24,15" fill="#00f5ff"/>
+      <line x1="4" y1="22" x2="20" y2="22" stroke="#ff2a7f" stroke-width="2" stroke-linecap="round"/>
+      <circle class="logo-center" cx="14" cy="18" r="2.5" fill="#ff2a7f"/>
+      <circle cx="26" cy="6" r="1.8" fill="#00f5ff"/>
     </svg>
+    <div class="splash-name">JONATHAN CAMPOS</div>
+    <div class="splash-title">Network Engineer &nbsp;·&nbsp; AI Builder</div>
+    <div class="splash-enter">&#9654;&nbsp; Click to Enter</div>
+    <div class="splash-radio-hint">Ritmo Romántica · Lima, Peru · will start playing</div>
   </div>
-  <div class="enter-label">Click to Enter</div>
-  <div class="enter-sub">Ritmo Romántica · Lima, Peru</div>
 </div>
 
 <!-- ── HERO ─────────────────────────────────────────────────────── -->
@@ -952,6 +987,46 @@ function stopRadio() {
 radioBtn.addEventListener('click', () => {
   radioLive ? stopRadio() : startRadio();
 });
+
+// ── Splash canvas: matrix code rain ──────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('splash-canvas');
+  const ctx    = canvas.getContext('2d');
+  const CHARS  = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
+  let cols, drops, raf;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    cols  = Math.floor(canvas.width / 18);
+    drops = Array(cols).fill(1);
+  }
+
+  function draw() {
+    ctx.fillStyle = 'rgba(4,0,14,0.07)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '13px JetBrains Mono, monospace';
+    for (let i = 0; i < drops.length; i++) {
+      const char = CHARS[Math.floor(Math.random() * CHARS.length)];
+      const alpha = 0.3 + Math.random() * 0.5;
+      ctx.fillStyle = `rgba(0,245,255,${alpha})`;
+      ctx.fillText(char, i * 18, drops[i] * 18);
+      if (drops[i] * 18 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+    raf = requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
+
+  // Stop animation once overlay is removed
+  document.getElementById('enter-overlay').addEventListener('transitionend', () => {
+    cancelAnimationFrame(raf);
+    window.removeEventListener('resize', resize);
+  }, { once: true });
+})();
 
 // Enter overlay — click dismisses it and starts the radio (satisfies browser autoplay policy)
 const enterOverlay = document.getElementById('enter-overlay');
