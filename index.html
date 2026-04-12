@@ -366,6 +366,80 @@
     .wave-bar:nth-child(4){ height:10px; animation: wave .6s 0.06s ease-in-out infinite alternate; }
     @keyframes wave { from{transform:scaleY(.2)} to{transform:scaleY(1)} }
 
+    /* ── Radio Player ── */
+    #radio-widget {
+      position: fixed;
+      bottom: 28px; left: 28px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    #radio-btn {
+      width: 56px; height: 56px;
+      background: rgba(4, 0, 14, 0.9);
+      border: 1px solid rgba(0,245,255,0.45);
+      color: var(--cyan);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(16px);
+      transition: border-color .3s, box-shadow .3s;
+      outline: none;
+      clip-path: polygon(14px 0%, 100% 0%, 100% 14px, 100% 100%, calc(100% - 14px) 100%, 0% 100%, 0% 0%, 14px 0%);
+    }
+    #radio-btn:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(0,245,255,0.4), inset 0 0 20px rgba(0,245,255,0.05);
+    }
+    #radio-btn.live {
+      border-color: var(--cyan);
+      animation: cyanPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes cyanPulse {
+      0%   { box-shadow: 0 0 0 0    rgba(0,245,255,0.55); }
+      70%  { box-shadow: 0 0 0 12px rgba(0,245,255,0);    }
+      100% { box-shadow: 0 0 0 0    rgba(0,245,255,0);    }
+    }
+    #radio-panel {
+      background: rgba(4,0,14,0.95);
+      border: 1px solid rgba(0,245,255,0.22);
+      padding: 10px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #667788;
+      letter-spacing: 1px;
+      line-height: 1.7;
+      white-space: nowrap;
+      backdrop-filter: blur(16px);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .2s, transform .2s;
+    }
+    #radio-widget:hover #radio-panel { opacity: 1; transform: translateY(0); }
+    #radio-panel-name {
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 600;
+      text-shadow: 0 0 8px var(--cyan);
+    }
+    #radio-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #334455;
+      margin-right: 5px;
+      vertical-align: middle;
+      transition: background .3s, box-shadow .3s;
+    }
+    #radio-dot.live {
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+      animation: dotBlink 1.2s ease-in-out infinite;
+    }
+    @keyframes dotBlink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
     /* ── Utility ── */
     .max-w { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
     section { padding: 96px 0; border-top: 1px solid rgba(0,245,255,0.07); }
@@ -824,6 +898,29 @@
   </div>
 </footer>
 
+<!-- ── FLOATING PERU RADIO PLAYER ────────────────────────────────── -->
+<div id="radio-widget">
+  <button id="radio-btn" aria-label="Toggle Peru radio stream">
+    <!-- Radio tower icon -->
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.9 4.9a9.5 9.5 0 0 0 0 14.2"/>
+      <path d="M19.1 4.9a9.5 9.5 0 0 1 0 14.2"/>
+      <path d="M7.8 7.8a6 6 0 0 0 0 8.4"/>
+      <path d="M16.2 7.8a6 6 0 0 1 0 8.4"/>
+      <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+      <line x1="12" y1="13.5" x2="12" y2="21"/>
+    </svg>
+  </button>
+  <div id="radio-panel">
+    <div id="radio-panel-name">RITMO ROMANTICA</div>
+    <div style="font-size:9px; color:#334455; margin-bottom:2px;">LIMA, PERU</div>
+    <div><span id="radio-dot"></span><span id="radio-status">OFFLINE</span></div>
+  </div>
+</div>
+<!-- Stream URL: replace the src below with any free Peruvian radio stream (.mp3 / .aac) -->
+<!-- Easy source: radio.garden → search Peru → copy stream URL from player             -->
+<audio id="radio-audio" preload="none" src="https://radio.garden/api/ara/content/listen/Bk52GczT/channel.mp3"></audio>
+
 <!-- ── FLOATING MUSIC BUTTON ──────────────────────────────────────── -->
 <button id="music-btn" aria-label="Toggle synthwave ambient music">
   <svg class="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -990,6 +1087,40 @@ function toggleMusic() {
 }
 
 musicBtn.addEventListener('click', toggleMusic);
+
+// ── Peru Radio Player ──────────────────────────────────────────────────────
+const radioBtn    = document.getElementById('radio-btn');
+const radioAudio  = document.getElementById('radio-audio');
+const radioDot    = document.getElementById('radio-dot');
+const radioStatus = document.getElementById('radio-status');
+let radioLive = false;
+
+function startRadio() {
+  // Stop synthwave if it's playing
+  if (playing) toggleMusic();
+  radioAudio.load();
+  radioAudio.play().then(() => {
+    radioLive = true;
+    radioBtn.classList.add('live');
+    radioDot.classList.add('live');
+    radioStatus.textContent = 'LIVE';
+  }).catch(() => {
+    radioStatus.textContent = 'ERROR';
+  });
+}
+
+function stopRadio() {
+  radioAudio.pause();
+  radioAudio.src = radioAudio.src; // reset buffer
+  radioLive = false;
+  radioBtn.classList.remove('live');
+  radioDot.classList.remove('live');
+  radioStatus.textContent = 'OFFLINE';
+}
+
+radioBtn.addEventListener('click', () => {
+  radioLive ? stopRadio() : startRadio();
+});
 
 // Auto-start on first user interaction (browsers block AudioContext before gesture)
 function autoStartOnce() {
