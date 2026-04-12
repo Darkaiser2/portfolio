@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jonathan Campos — Network Engineer & AI Builder</title>
   <meta name="description" content="10 years in enterprise NOC operations. Now building AI tools that make network engineers faster." />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2304000e'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%2300f5ff'/%3E%3Ccircle cx='5' cy='5' r='2.5' fill='%23ff2a7f'/%3E%3Ccircle cx='27' cy='5' r='2.5' fill='%23ff2a7f'/%3E%3Ccircle cx='5' cy='27' r='2.5' fill='%23ff2a7f'/%3E%3Ccircle cx='27' cy='27' r='2.5' fill='%23ff2a7f'/%3E%3Cline x1='7' y1='7' x2='13' y2='13' stroke='%2300f5ff' stroke-width='1.2'/%3E%3Cline x1='25' y1='7' x2='19' y2='13' stroke='%2300f5ff' stroke-width='1.2'/%3E%3Cline x1='7' y1='25' x2='13' y2='19' stroke='%23ff2a7f' stroke-width='1.2'/%3E%3Cline x1='25' y1='25' x2='19' y2='19' stroke='%23ff2a7f' stroke-width='1.2'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2304000e' rx='4'/%3E%3Cline x1='7' y1='25' x2='25' y2='7' stroke='%2300f5ff' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpolygon points='25,7 17,9 23,15' fill='%2300f5ff'/%3E%3Cline x1='4' y1='21' x2='19' y2='21' stroke='%23ff2a7f' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='19' cy='21' r='2' fill='%23ff2a7f'/%3E%3Ccircle cx='4' cy='21' r='1.5' fill='%23ff2a7f' opacity='0.6'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
@@ -395,16 +395,23 @@
   <div class="max-w" style="display:flex; justify-content:space-between; align-items:center; padding-top:14px; padding-bottom:14px;">
 
     <a href="#" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
-      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="5"  cy="5"  r="2.5" fill="#ff2a7f" style="filter:drop-shadow(0 0 4px #ff2a7f)"/>
-        <circle cx="27" cy="5"  r="2.5" fill="#ff2a7f" style="filter:drop-shadow(0 0 4px #ff2a7f)"/>
-        <circle cx="5"  cy="27" r="2.5" fill="#ff2a7f" style="filter:drop-shadow(0 0 4px #ff2a7f)"/>
-        <circle cx="27" cy="27" r="2.5" fill="#ff2a7f" style="filter:drop-shadow(0 0 4px #ff2a7f)"/>
-        <line x1="7.2"  y1="7.2"  x2="12.8" y2="12.8" stroke="#00f5ff" stroke-width="1.2" opacity="0.6"/>
-        <line x1="24.8" y1="7.2"  x2="19.2" y2="12.8" stroke="#00f5ff" stroke-width="1.2" opacity="0.6"/>
-        <line x1="7.2"  y1="24.8" x2="12.8" y2="19.2" stroke="#ff2a7f" stroke-width="1.2" opacity="0.6"/>
-        <line x1="24.8" y1="24.8" x2="19.2" y2="19.2" stroke="#ff2a7f" stroke-width="1.2" opacity="0.6"/>
-        <circle class="logo-center" cx="16" cy="16" r="4" fill="#00f5ff" style="filter:drop-shadow(0 0 6px #00f5ff)"/>
+      <!-- Sagittarius arrow logo -->
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Arrow shaft: bottom-left to top-right -->
+        <line x1="6" y1="26" x2="26" y2="6" stroke="#00f5ff" stroke-width="2.2" stroke-linecap="round"
+              style="filter:drop-shadow(0 0 4px #00f5ff)"/>
+        <!-- Arrowhead triangle -->
+        <polygon points="26,6 17,8 24,15" fill="#00f5ff"
+                 style="filter:drop-shadow(0 0 6px #00f5ff)"/>
+        <!-- Horizontal crossbar (Sagittarius signature) -->
+        <line x1="4" y1="22" x2="20" y2="22" stroke="#ff2a7f" stroke-width="2" stroke-linecap="round"
+              style="filter:drop-shadow(0 0 5px #ff2a7f)"/>
+        <!-- Node at crossbar-arrow intersection -->
+        <circle class="logo-center" cx="14" cy="18" r="2.5" fill="#ff2a7f"
+                style="filter:drop-shadow(0 0 6px #ff2a7f)"/>
+        <!-- Small circuit node at arrow tip -->
+        <circle cx="26" cy="6" r="1.8" fill="#00f5ff"
+                style="filter:drop-shadow(0 0 4px #00f5ff)"/>
       </svg>
       <span class="mono" style="color:var(--cyan); font-size:13px; font-weight:500; text-shadow:0 0 8px var(--cyan); letter-spacing:1px;">
         JONATHAN.CAMPOS
@@ -833,8 +840,9 @@
 
 <script>
 // ── Synthwave Beat Generator (Web Audio API) ──────────────────────────────
-// No audio files needed. Pure generative cyberpunk synth.
-// 120 BPM | Kick + hi-hat + bass arpeggio + lead + atmospheric pad.
+// 118 BPM | Kick + snare + hi-hat + filtered bass arpeggio + soft lead
+// Pad removed — it was causing the droning loop artifact.
+// Auto-starts on first user interaction (browser autoplay policy).
 
 const musicBtn = document.getElementById('music-btn');
 const tooltip  = document.getElementById('music-tooltip');
@@ -842,190 +850,157 @@ const tooltip  = document.getElementById('music-tooltip');
 let ctx = null, master = null, schedulerHandle = null;
 let playing = false, step = 0, nextStepTime = 0;
 const BPM = 118, STEPS = 16;
-const stepLen = () => (60 / BPM) / 4; // 16th note duration
+const stepDur = () => (60 / BPM) / 4; // 16th note
 
-// Am pentatonic bass notes (Hz)
+// Am pentatonic bass (Hz) — one octave lower for warmth
 const BASS = [55, 55, 65.41, 55, 82.41, 55, 65.41, 98,
               55, 55, 65.41, 82.41, 55, 65.41, 98, 55];
-// Lead arpeggio (higher octave, every other step)
+// Lead arpeggio (higher register, on odd steps)
 const LEAD = [440, 523.25, 659.25, 784, 880, 659.25, 523.25, 440];
 
 function kick(t) {
   const osc = ctx.createOscillator(), g = ctx.createGain();
-  osc.frequency.setValueAtTime(160, t);
-  osc.frequency.exponentialRampToValueAtTime(0.001, t + 0.45);
-  g.gain.setValueAtTime(0.9, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+  osc.frequency.setValueAtTime(150, t);
+  osc.frequency.exponentialRampToValueAtTime(0.001, t + 0.4);
+  g.gain.setValueAtTime(0.7, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
   osc.connect(g); g.connect(master);
-  osc.start(t); osc.stop(t + 0.5);
+  osc.start(t); osc.stop(t + 0.45);
 }
 
 function snare(t) {
-  // noise burst
-  const buf = ctx.createBuffer(1, ctx.sampleRate * 0.2, ctx.sampleRate);
+  const len = Math.floor(ctx.sampleRate * 0.18);
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
   const d = buf.getChannelData(0);
-  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-  const src = ctx.createBufferSource();
-  src.buffer = buf;
-  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 1800;
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const src = ctx.createBufferSource(); src.buffer = buf;
+  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2000;
   const g = ctx.createGain();
-  g.gain.setValueAtTime(0.18, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+  g.gain.setValueAtTime(0.14, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
   src.connect(hp); hp.connect(g); g.connect(master);
   src.start(t);
 }
 
-function hihat(t, vol = 0.1) {
-  const buf = ctx.createBuffer(1, ctx.sampleRate * 0.05, ctx.sampleRate);
+function hihat(t, vol) {
+  const len = Math.floor(ctx.sampleRate * 0.04);
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
   const d = buf.getChannelData(0);
-  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-  const src = ctx.createBufferSource();
-  src.buffer = buf;
-  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 9000;
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const src = ctx.createBufferSource(); src.buffer = buf;
+  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 10000;
   const g = ctx.createGain();
   g.gain.setValueAtTime(vol, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
   src.connect(hp); hp.connect(g); g.connect(master);
   src.start(t);
 }
 
 function bass(t, freq) {
   const osc = ctx.createOscillator(), filt = ctx.createBiquadFilter(), g = ctx.createGain();
-  osc.type = 'sawtooth';
-  osc.frequency.value = freq;
+  osc.type = 'sawtooth'; osc.frequency.value = freq;
   filt.type = 'lowpass';
-  filt.frequency.setValueAtTime(900, t);
-  filt.frequency.exponentialRampToValueAtTime(180, t + stepLen() * 1.8);
-  filt.Q.value = 2.5;
-  g.gain.setValueAtTime(0.32, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + stepLen() * 1.9);
+  filt.frequency.setValueAtTime(700, t);
+  filt.frequency.exponentialRampToValueAtTime(160, t + stepDur() * 1.6);
+  filt.Q.value = 1.2; // lowered from 2.5 — removes the resonance loop
+  g.gain.setValueAtTime(0.22, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + stepDur() * 1.8);
   osc.connect(filt); filt.connect(g); g.connect(master);
-  osc.start(t); osc.stop(t + stepLen() * 2);
+  osc.start(t); osc.stop(t + stepDur() * 2);
 }
 
 function lead(t, freq) {
-  const osc = ctx.createOscillator(), g = ctx.createGain();
-  osc.type = 'square';
-  osc.frequency.value = freq;
-  // slight detune for width
+  const osc  = ctx.createOscillator(), g  = ctx.createGain();
   const osc2 = ctx.createOscillator(), g2 = ctx.createGain();
-  osc2.type = 'square'; osc2.frequency.value = freq * 1.005;
-  g.gain.setValueAtTime(0.055, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
-  g2.gain.setValueAtTime(0.045, t);
-  g2.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
-  osc.connect(g);  g.connect(master);
+  osc.type = osc2.type = 'square';
+  osc.frequency.value  = freq;
+  osc2.frequency.value = freq * 1.004; // slight detune for width
+  g.gain.setValueAtTime(0.035, t);  g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+  g2.gain.setValueAtTime(0.028, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+  osc.connect(g);   g.connect(master);
   osc2.connect(g2); g2.connect(master);
-  osc.start(t); osc.stop(t + 0.2);
-  osc2.start(t); osc2.stop(t + 0.2);
+  osc.start(t); osc.stop(t + 0.18);
+  osc2.start(t); osc2.stop(t + 0.18);
 }
-
-function pad(startTime) {
-  // Slow evolving chord: Am (A, C, E, G)
-  const freqs = [110, 130.81, 164.81, 196];
-  freqs.forEach((f, i) => {
-    const osc = ctx.createOscillator(), filt = ctx.createBiquadFilter(), g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = f;
-    // slow LFO
-    const lfo = ctx.createOscillator(), lfoG = ctx.createGain();
-    lfo.frequency.value = 0.08 + i * 0.02; lfoG.gain.value = 0.4;
-    lfo.connect(lfoG); lfoG.connect(osc.frequency);
-    filt.type = 'lowpass'; filt.frequency.value = 700; filt.Q.value = 1;
-    g.gain.setValueAtTime(0, startTime);
-    g.gain.linearRampToValueAtTime(0.055 / (i + 1), startTime + 4);
-    osc.connect(filt); filt.connect(g); g.connect(master);
-    osc.start(startTime); lfo.start(startTime);
-    // store for cleanup
-    padNodes.push(osc, lfo);
-  });
-}
-
-let padNodes = [];
 
 function schedule() {
   while (nextStepTime < ctx.currentTime + 0.25) {
     const t = nextStepTime;
     const s = step % STEPS;
 
-    // Kick: steps 0, 8
-    if (s === 0 || s === 8) kick(t);
-    // Snare: steps 4, 12
-    if (s === 4 || s === 12) snare(t);
-    // Hi-hat: every even step
-    if (s % 2 === 0) hihat(t, 0.08);
-    // Open hi-hat on step 6
-    if (s === 6) hihat(t, 0.16);
-    // Bass: every step
-    bass(t, BASS[s]);
-    // Lead: odd steps
-    if (s % 2 === 1) lead(t, LEAD[Math.floor(s / 2) % LEAD.length]);
+    if (s === 0 || s === 8)  kick(t);              // Kick  1 & 3
+    if (s === 4 || s === 12) snare(t);             // Snare 2 & 4
+    if (s % 2 === 0)         hihat(t, 0.055);      // Closed hats
+    if (s === 6)             hihat(t, 0.10);       // Open hat
+    bass(t, BASS[s]);                              // Bass every step
+    if (s % 2 === 1) lead(t, LEAD[Math.floor(s / 2) % LEAD.length]); // Lead
 
     step++;
-    nextStepTime += stepLen();
+    nextStepTime += stepDur();
   }
   schedulerHandle = setTimeout(schedule, 50);
 }
 
 function buildReverb() {
   const conv = ctx.createConvolver();
-  const len = ctx.sampleRate * 2.5;
-  const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+  const len  = ctx.sampleRate * 2;
+  const buf  = ctx.createBuffer(2, len, ctx.sampleRate);
   for (let ch = 0; ch < 2; ch++) {
     const d = buf.getChannelData(ch);
-    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.5);
   }
-  conv.buffer = buf;
-  return conv;
+  conv.buffer = buf; return conv;
 }
 
 function startMusic() {
-  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  ctx    = new (window.AudioContext || window.webkitAudioContext)();
   master = ctx.createGain();
   master.gain.setValueAtTime(0, ctx.currentTime);
-  master.gain.linearRampToValueAtTime(0.7, ctx.currentTime + 2);
+  master.gain.linearRampToValueAtTime(0.28, ctx.currentTime + 2); // lower volume
 
-  // Reverb send
-  const rev = buildReverb();
-  const revGain = ctx.createGain(); revGain.gain.value = 0.22;
+  const rev     = buildReverb();
+  const revGain = ctx.createGain(); revGain.gain.value = 0.15;
   rev.connect(revGain); revGain.connect(ctx.destination);
   master.connect(ctx.destination);
 
-  // Pad goes to reverb too
-  const padBus = ctx.createGain(); padBus.gain.value = 1;
-  padBus.connect(master); padBus.connect(rev);
-
   step = 0;
-  nextStepTime = ctx.currentTime + 0.1;
-  padNodes = [];
-  pad(ctx.currentTime);
+  nextStepTime = ctx.currentTime + 0.05;
   schedule();
 }
 
 function stopMusic() {
   if (!master) return;
-  master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
+  master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2);
   setTimeout(() => {
     clearTimeout(schedulerHandle);
-    padNodes.forEach(n => { try { n.stop(); } catch(_) {} });
-    ctx.close();
-    ctx = master = null; padNodes = [];
-  }, 1800);
+    ctx.close(); ctx = master = null;
+  }, 1500);
 }
 
-musicBtn.addEventListener('click', () => {
+function toggleMusic() {
   if (!playing) {
-    startMusic();
-    playing = true;
+    startMusic(); playing = true;
     musicBtn.classList.add('playing');
     tooltip.textContent = 'SYNTHWAVE // PLAYING';
   } else {
-    stopMusic();
-    playing = false;
+    stopMusic(); playing = false;
     musicBtn.classList.remove('playing');
     tooltip.textContent = 'SYNTHWAVE // CLICK TO PLAY';
   }
-});
+}
+
+musicBtn.addEventListener('click', toggleMusic);
+
+// Auto-start on first user interaction (browsers block AudioContext before gesture)
+function autoStartOnce() {
+  if (!playing) toggleMusic();
+  document.removeEventListener('click',      autoStartOnce);
+  document.removeEventListener('keydown',    autoStartOnce);
+  document.removeEventListener('touchstart', autoStartOnce);
+}
+document.addEventListener('click',      autoStartOnce);
+document.addEventListener('keydown',    autoStartOnce);
+document.addEventListener('touchstart', autoStartOnce);
 </script>
 
 </body>
