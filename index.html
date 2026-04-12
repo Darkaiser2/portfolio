@@ -304,76 +304,15 @@
     @keyframes nodePulse { 0%,100%{opacity:1} 50%{opacity:.4} }
     .logo-center { animation: nodePulse 2s ease-in-out infinite; }
 
-    /* ── Music Button ── */
-    #music-btn {
-      position: fixed;
-      bottom: 28px; right: 28px;
-      z-index: 100;
-      width: 56px; height: 56px;
-      background: rgba(4, 0, 14, 0.9);
-      border: 1px solid rgba(255,42,127,0.5);
-      color: var(--pink);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(16px);
-      transition: border-color .3s, box-shadow .3s;
-      outline: none;
-      clip-path: polygon(14px 0%, calc(100% - 0px) 0%, 100% 14px, 100% 100%, calc(100% - 14px) 100%, 0% 100%, 0% calc(100% - 0px), 0% 14px);
-    }
-    #music-btn:hover {
-      border-color: var(--pink);
-      box-shadow: 0 0 20px rgba(255,42,127,0.4), inset 0 0 20px rgba(255,42,127,0.05);
-    }
-    #music-btn.playing {
-      border-color: var(--pink);
-      box-shadow: 0 0 0 0 rgba(255,42,127,0.5);
-      animation: pinkPulse 1.5s ease-in-out infinite;
-    }
-    @keyframes pinkPulse {
-      0%   { box-shadow: 0 0 0 0   rgba(255,42,127,0.5); }
-      70%  { box-shadow: 0 0 0 12px rgba(255,42,127,0);  }
-      100% { box-shadow: 0 0 0 0   rgba(255,42,127,0);  }
-    }
-
-    #music-tooltip {
-      position: fixed;
-      bottom: 94px; right: 28px;
-      z-index: 100;
-      background: rgba(4,0,14,0.95);
-      border: 1px solid rgba(255,42,127,0.25);
-      padding: 5px 12px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--pink);
-      letter-spacing: 1px;
-      white-space: nowrap;
-      pointer-events: none;
-      opacity: 0;
-      transform: translateY(4px);
-      transition: opacity .2s, transform .2s;
-    }
-    #music-btn:hover + #music-tooltip { opacity:1; transform: translateY(0); }
-
-    /* Wave bars */
-    .wave-bars { display:none; align-items:flex-end; gap:2px; height:18px; }
-    .wave-bar  { width:3px; border-radius:1px; background:currentColor; transform-origin:bottom; }
-    #music-btn.playing .wave-bars { display:flex; }
-    #music-btn.playing .play-icon { display:none; }
-    .play-icon { display:block; }
-    .wave-bar:nth-child(1){ height:7px;  animation: wave .6s 0s    ease-in-out infinite alternate; }
-    .wave-bar:nth-child(2){ height:13px; animation: wave .6s 0.12s ease-in-out infinite alternate; }
-    .wave-bar:nth-child(3){ height:5px;  animation: wave .6s 0.24s ease-in-out infinite alternate; }
-    .wave-bar:nth-child(4){ height:10px; animation: wave .6s 0.06s ease-in-out infinite alternate; }
-    @keyframes wave { from{transform:scaleY(.2)} to{transform:scaleY(1)} }
 
     /* ── Radio Player ── */
     #radio-widget {
       position: fixed;
-      bottom: 28px; left: 28px;
+      bottom: 28px; right: 28px;
       z-index: 100;
       display: flex;
       flex-direction: column-reverse;
-      align-items: flex-start;
+      align-items: flex-end;
       gap: 8px;
     }
     #radio-btn {
@@ -917,178 +856,10 @@
     <div><span id="radio-dot"></span><span id="radio-status">OFFLINE</span></div>
   </div>
 </div>
-<!-- Stream URL: replace the src below with any free Peruvian radio stream (.mp3 / .aac) -->
-<!-- Easy source: radio.garden → search Peru → copy stream URL from player             -->
 <audio id="radio-audio" preload="none" src="https://radio.garden/api/ara/content/listen/Bk52GczT/channel.mp3"></audio>
 
-<!-- ── FLOATING MUSIC BUTTON ──────────────────────────────────────── -->
-<button id="music-btn" aria-label="Toggle synthwave ambient music">
-  <svg class="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M8 5v14l11-7z"/>
-  </svg>
-  <span class="wave-bars" aria-hidden="true">
-    <span class="wave-bar"></span>
-    <span class="wave-bar"></span>
-    <span class="wave-bar"></span>
-    <span class="wave-bar"></span>
-  </span>
-</button>
-<div id="music-tooltip">SYNTHWAVE // CLICK TO PLAY</div>
-
 <script>
-// ── Synthwave Beat Generator (Web Audio API) ──────────────────────────────
-// 118 BPM | Kick + snare + hi-hat + filtered bass arpeggio + soft lead
-// Pad removed — it was causing the droning loop artifact.
-// Auto-starts on first user interaction (browser autoplay policy).
-
-const musicBtn = document.getElementById('music-btn');
-const tooltip  = document.getElementById('music-tooltip');
-
-let ctx = null, master = null, schedulerHandle = null;
-let playing = false, step = 0, nextStepTime = 0;
-const BPM = 118, STEPS = 16;
-const stepDur = () => (60 / BPM) / 4; // 16th note
-
-// Am pentatonic bass (Hz) — one octave lower for warmth
-const BASS = [55, 55, 65.41, 55, 82.41, 55, 65.41, 98,
-              55, 55, 65.41, 82.41, 55, 65.41, 98, 55];
-// Lead arpeggio (higher register, on odd steps)
-const LEAD = [440, 523.25, 659.25, 784, 880, 659.25, 523.25, 440];
-
-function kick(t) {
-  const osc = ctx.createOscillator(), g = ctx.createGain();
-  osc.frequency.setValueAtTime(150, t);
-  osc.frequency.exponentialRampToValueAtTime(0.001, t + 0.4);
-  g.gain.setValueAtTime(0.7, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-  osc.connect(g); g.connect(master);
-  osc.start(t); osc.stop(t + 0.45);
-}
-
-function snare(t) {
-  const len = Math.floor(ctx.sampleRate * 0.18);
-  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-  const d = buf.getChannelData(0);
-  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
-  const src = ctx.createBufferSource(); src.buffer = buf;
-  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2000;
-  const g = ctx.createGain();
-  g.gain.setValueAtTime(0.14, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
-  src.connect(hp); hp.connect(g); g.connect(master);
-  src.start(t);
-}
-
-function hihat(t, vol) {
-  const len = Math.floor(ctx.sampleRate * 0.04);
-  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-  const d = buf.getChannelData(0);
-  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
-  const src = ctx.createBufferSource(); src.buffer = buf;
-  const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 10000;
-  const g = ctx.createGain();
-  g.gain.setValueAtTime(vol, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
-  src.connect(hp); hp.connect(g); g.connect(master);
-  src.start(t);
-}
-
-function bass(t, freq) {
-  const osc = ctx.createOscillator(), filt = ctx.createBiquadFilter(), g = ctx.createGain();
-  osc.type = 'sawtooth'; osc.frequency.value = freq;
-  filt.type = 'lowpass';
-  filt.frequency.setValueAtTime(700, t);
-  filt.frequency.exponentialRampToValueAtTime(160, t + stepDur() * 1.6);
-  filt.Q.value = 1.2; // lowered from 2.5 — removes the resonance loop
-  g.gain.setValueAtTime(0.22, t);
-  g.gain.exponentialRampToValueAtTime(0.001, t + stepDur() * 1.8);
-  osc.connect(filt); filt.connect(g); g.connect(master);
-  osc.start(t); osc.stop(t + stepDur() * 2);
-}
-
-function lead(t, freq) {
-  const osc  = ctx.createOscillator(), g  = ctx.createGain();
-  const osc2 = ctx.createOscillator(), g2 = ctx.createGain();
-  osc.type = osc2.type = 'square';
-  osc.frequency.value  = freq;
-  osc2.frequency.value = freq * 1.004; // slight detune for width
-  g.gain.setValueAtTime(0.035, t);  g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
-  g2.gain.setValueAtTime(0.028, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
-  osc.connect(g);   g.connect(master);
-  osc2.connect(g2); g2.connect(master);
-  osc.start(t); osc.stop(t + 0.18);
-  osc2.start(t); osc2.stop(t + 0.18);
-}
-
-function schedule() {
-  while (nextStepTime < ctx.currentTime + 0.25) {
-    const t = nextStepTime;
-    const s = step % STEPS;
-
-    if (s === 0 || s === 8)  kick(t);              // Kick  1 & 3
-    if (s === 4 || s === 12) snare(t);             // Snare 2 & 4
-    if (s % 2 === 0)         hihat(t, 0.055);      // Closed hats
-    if (s === 6)             hihat(t, 0.10);       // Open hat
-    bass(t, BASS[s]);                              // Bass every step
-    if (s % 2 === 1) lead(t, LEAD[Math.floor(s / 2) % LEAD.length]); // Lead
-
-    step++;
-    nextStepTime += stepDur();
-  }
-  schedulerHandle = setTimeout(schedule, 50);
-}
-
-function buildReverb() {
-  const conv = ctx.createConvolver();
-  const len  = ctx.sampleRate * 2;
-  const buf  = ctx.createBuffer(2, len, ctx.sampleRate);
-  for (let ch = 0; ch < 2; ch++) {
-    const d = buf.getChannelData(ch);
-    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.5);
-  }
-  conv.buffer = buf; return conv;
-}
-
-function startMusic() {
-  ctx    = new (window.AudioContext || window.webkitAudioContext)();
-  master = ctx.createGain();
-  master.gain.setValueAtTime(0, ctx.currentTime);
-  master.gain.linearRampToValueAtTime(0.28, ctx.currentTime + 2); // lower volume
-
-  const rev     = buildReverb();
-  const revGain = ctx.createGain(); revGain.gain.value = 0.15;
-  rev.connect(revGain); revGain.connect(ctx.destination);
-  master.connect(ctx.destination);
-
-  step = 0;
-  nextStepTime = ctx.currentTime + 0.05;
-  schedule();
-}
-
-function stopMusic() {
-  if (!master) return;
-  master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2);
-  setTimeout(() => {
-    clearTimeout(schedulerHandle);
-    ctx.close(); ctx = master = null;
-  }, 1500);
-}
-
-function toggleMusic() {
-  if (!playing) {
-    startMusic(); playing = true;
-    musicBtn.classList.add('playing');
-    tooltip.textContent = 'SYNTHWAVE // PLAYING';
-  } else {
-    stopMusic(); playing = false;
-    musicBtn.classList.remove('playing');
-    tooltip.textContent = 'SYNTHWAVE // CLICK TO PLAY';
-  }
-}
-
-musicBtn.addEventListener('click', toggleMusic);
-
-// ── Peru Radio Player ──────────────────────────────────────────────────────
+// ── Peru Radio Player — Ritmo Romantica 99.7 FM Lima ─────────────────────
 const radioBtn    = document.getElementById('radio-btn');
 const radioAudio  = document.getElementById('radio-audio');
 const radioDot    = document.getElementById('radio-dot');
@@ -1096,8 +867,6 @@ const radioStatus = document.getElementById('radio-status');
 let radioLive = false;
 
 function startRadio() {
-  // Stop synthwave if it's playing
-  if (playing) toggleMusic();
   radioAudio.load();
   radioAudio.play().then(() => {
     radioLive = true;
@@ -1111,7 +880,7 @@ function startRadio() {
 
 function stopRadio() {
   radioAudio.pause();
-  radioAudio.src = radioAudio.src; // reset buffer
+  radioAudio.load(); // reset buffer / stop buffering
   radioLive = false;
   radioBtn.classList.remove('live');
   radioDot.classList.remove('live');
@@ -1122,16 +891,16 @@ radioBtn.addEventListener('click', () => {
   radioLive ? stopRadio() : startRadio();
 });
 
-// Auto-start on first user interaction (browsers block AudioContext before gesture)
-function autoStartOnce() {
-  if (!playing) toggleMusic();
-  document.removeEventListener('click',      autoStartOnce);
-  document.removeEventListener('keydown',    autoStartOnce);
-  document.removeEventListener('touchstart', autoStartOnce);
+// Autoplay on first user interaction (browser autoplay policy requires a gesture)
+function autoPlayOnce() {
+  startRadio();
+  document.removeEventListener('click',      autoPlayOnce);
+  document.removeEventListener('keydown',    autoPlayOnce);
+  document.removeEventListener('touchstart', autoPlayOnce);
 }
-document.addEventListener('click',      autoStartOnce);
-document.addEventListener('keydown',    autoStartOnce);
-document.addEventListener('touchstart', autoStartOnce);
+document.addEventListener('click',      autoPlayOnce);
+document.addEventListener('keydown',    autoPlayOnce);
+document.addEventListener('touchstart', autoPlayOnce);
 </script>
 
 </body>
