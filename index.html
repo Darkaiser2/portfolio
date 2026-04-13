@@ -388,7 +388,7 @@
     #radio-widget {
       position: fixed;
       bottom: 28px; right: 28px;
-      z-index: 100;
+      z-index: 300;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -664,7 +664,7 @@
     #chat-widget {
       position: fixed;
       bottom: 28px; left: 28px;
-      z-index: 100;
+      z-index: 300;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -961,6 +961,34 @@
         <div class="orb" style="font-size:2rem; font-weight:700; color:var(--purple); text-shadow:0 0 10px var(--purple);">∞</div>
         <div class="mono" style="font-size:10px; color:#445566; margin-top:6px; letter-spacing:2px;">SOPs IMPROVED</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARCADE ─────────────────────────────────────────────────────── -->
+<section id="arcade" style="background:linear-gradient(180deg,#0a0005 0%,var(--bg) 100%);border-top:1px solid rgba(200,0,0,0.15);">
+  <div class="max-w" style="text-align:center;">
+    <p class="section-label" style="color:#cc0000;text-shadow:0 0 8px rgba(200,0,0,0.5);justify-content:center;">// ARCADE</p>
+    <div style="font-size:52px;margin-bottom:12px;line-height:1;">☠</div>
+    <h2 class="orb" style="font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#cc0000;text-shadow:0 0 20px rgba(200,0,0,0.5),0 0 60px rgba(200,0,0,0.2);margin-bottom:10px;letter-spacing:4px;">VOID SERPENT</h2>
+    <p class="mono" style="font-size:11px;color:#556677;letter-spacing:3px;margin-bottom:18px;">LAST ONE SLITHERS</p>
+    <p style="color:#445566;max-width:480px;margin:0 auto 32px;line-height:1.8;font-size:13px;">Real-time multiplayer horror snake. Compete against every visitor on this page. The arena shrinks. The Reaper hunts. Only one survives.</p>
+    <button id="void-enter-btn" style="
+      display:inline-flex;align-items:center;gap:10px;
+      padding:14px 32px;background:transparent;
+      border:1px solid rgba(200,0,0,0.6);color:#cc0000;
+      font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;
+      cursor:pointer;transition:background .2s,box-shadow .2s;
+      clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+    " onmouseover="this.style.background='rgba(200,0,0,0.1)';this.style.boxShadow='0 0 30px rgba(200,0,0,0.3)'"
+       onmouseout="this.style.background='transparent';this.style.boxShadow='none'">
+      ☠&nbsp;ENTER THE VOID
+    </button>
+    <div style="margin-top:24px;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;">
+      <div style="text-align:center;"><div class="orb" style="font-size:10px;color:#cc0000;margin-bottom:3px;">THE REAPER</div><div style="font-size:9px;color:#334455;font-family:'JetBrains Mono',monospace;">Spawns at tick 38. Hunts you.</div></div>
+      <div style="text-align:center;"><div class="orb" style="font-size:10px;color:#cc0000;margin-bottom:3px;">SHRINKING ARENA</div><div style="font-size:9px;color:#334455;font-family:'JetBrains Mono',monospace;">Walls close every 28 ticks.</div></div>
+      <div style="text-align:center;"><div class="orb" style="font-size:10px;color:#cc0000;margin-bottom:3px;">CURSED FOOD</div><div style="font-size:9px;color:#334455;font-family:'JetBrains Mono',monospace;">Reverses your controls.</div></div>
+      <div style="text-align:center;"><div class="orb" style="font-size:10px;color:#cc0000;margin-bottom:3px;">GHOST TRAILS</div><div style="font-size:9px;color:#334455;font-family:'JetBrains Mono',monospace;">Dead snakes linger for 7s.</div></div>
     </div>
   </div>
 </section>
@@ -1303,50 +1331,6 @@
   </div>
 </section>
 
-<!-- ── ARCADE ─────────────────────────────────────────────────────── -->
-<section id="arcade" style="background:linear-gradient(180deg,var(--bg) 0%,#0a0005 100%);border-top:1px solid rgba(200,0,0,0.15);">
-  <div class="max-w" style="text-align:center;">
-    <p class="section-label" style="color:#cc0000;text-shadow:0 0 8px rgba(200,0,0,0.5);">// ARCADE</p>
-    <div style="font-size:56px;margin-bottom:12px;line-height:1;">☠</div>
-    <h2 class="orb" style="font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#cc0000;text-shadow:0 0 20px rgba(200,0,0,0.5),0 0 60px rgba(200,0,0,0.2);margin-bottom:12px;letter-spacing:4px;">VOID SERPENT</h2>
-    <p class="mono" style="font-size:12px;color:#556677;letter-spacing:3px;margin-bottom:20px;">LAST ONE SLITHERS</p>
-    <p style="color:#445566;max-width:480px;margin:0 auto 36px;line-height:1.8;font-size:13px;">Real-time multiplayer horror snake. Compete against every visitor on this page. The arena shrinks. The Reaper hunts. Only one survives.</p>
-    <button id="void-enter-btn" style="
-      display:inline-flex;align-items:center;gap:10px;
-      padding:14px 32px;
-      background:transparent;
-      border:1px solid rgba(200,0,0,0.6);
-      color:#cc0000;
-      font-family:'Orbitron',sans-serif;
-      font-size:13px;font-weight:700;letter-spacing:3px;
-      cursor:pointer;
-      transition:background .2s,box-shadow .2s;
-      clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
-    " onmouseover="this.style.background='rgba(200,0,0,0.1)';this.style.boxShadow='0 0 30px rgba(200,0,0,0.3)'"
-       onmouseout="this.style.background='transparent';this.style.boxShadow='none'">
-      ☠&nbsp;ENTER THE VOID
-    </button>
-    <div style="margin-top:28px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap;">
-      <div style="text-align:center;">
-        <div class="orb" style="font-size:11px;color:#cc0000;margin-bottom:4px;">THE REAPER</div>
-        <div style="font-size:10px;color:#334455;font-family:'JetBrains Mono',monospace;">Spawns at tick 38. Hunts you.</div>
-      </div>
-      <div style="text-align:center;">
-        <div class="orb" style="font-size:11px;color:#cc0000;margin-bottom:4px;">SHRINKING ARENA</div>
-        <div style="font-size:10px;color:#334455;font-family:'JetBrains Mono',monospace;">Walls close every 28 ticks.</div>
-      </div>
-      <div style="text-align:center;">
-        <div class="orb" style="font-size:11px;color:#cc0000;margin-bottom:4px;">CURSED FOOD</div>
-        <div style="font-size:10px;color:#334455;font-family:'JetBrains Mono',monospace;">Reverses your controls.</div>
-      </div>
-      <div style="text-align:center;">
-        <div class="orb" style="font-size:11px;color:#cc0000;margin-bottom:4px;">GHOST TRAILS</div>
-        <div style="font-size:10px;color:#334455;font-family:'JetBrains Mono',monospace;">Dead snakes block the path.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── FOOTER ─────────────────────────────────────────────────────── -->
 <footer style="border-top:1px solid rgba(0,245,255,0.07); padding:28px 0;">
   <div class="max-w" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
@@ -1382,13 +1366,25 @@
       </div>
       <!-- Scoreboard (shown during game) -->
       <div id="void-scoreboard" style="display:none;"></div>
-      <!-- Controls -->
+      <!-- How to play -->
       <div id="void-controls">
-        <div class="void-side-label">CONTROLS</div>
-        <div class="mono" style="font-size:9px;color:#445566;line-height:2;">
-          ↑↓←→ &nbsp;or&nbsp; WASD<br>
-          <span style="color:#330022;">☠ Avoid the Reaper</span><br>
-          <span style="color:#220033;">💜 Cursed food = reversed</span>
+        <div class="void-side-label">HOW TO PLAY</div>
+        <div class="mono" style="font-size:9px;color:#445566;line-height:1.9;padding:8px 14px;">
+          <div style="margin-bottom:6px;color:#667788;font-weight:700;">CONTROLS</div>
+          <div>↑ ↓ ← →&nbsp; or &nbsp;W A S D</div>
+          <div style="margin-top:8px;margin-bottom:6px;color:#667788;font-weight:700;">OBJECTIVE</div>
+          <div>Eat food to grow. Last snake alive wins.</div>
+          <div style="margin-top:8px;margin-bottom:6px;color:#667788;font-weight:700;">FOOD</div>
+          <div><span style="color:#cc0000;">● Red</span> — grow +1, score +1</div>
+          <div><span style="color:#9900ff;">● Purple</span> — CURSED: controls reverse for 5 ticks</div>
+          <div style="margin-top:8px;margin-bottom:6px;color:#667788;font-weight:700;">HAZARDS</div>
+          <div><span style="color:#884444;">■ Walls</span> — instant death</div>
+          <div><span style="color:#884444;">■ Other snakes</span> — instant death</div>
+          <div><span style="color:#554444;">■ Ghost trails</span> — dead snakes block for 7s</div>
+          <div style="margin-top:8px;margin-bottom:6px;color:#667788;font-weight:700;">EVENTS</div>
+          <div><span style="color:#cc0000;">☠ Reaper</span> — white skull, spawns tick 38, hunts the nearest player</div>
+          <div style="margin-top:4px;"><span style="color:#883300;">⬛ Shrink</span> — arena walls close every 28 ticks, forcing confrontation</div>
+          <div style="margin-top:4px;"><span style="color:#886600;">⚡ Speed up</span> — game gets faster each time a player dies</div>
         </div>
       </div>
     </div>
