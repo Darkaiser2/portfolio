@@ -493,6 +493,173 @@
       border-right:2px solid var(--pink);
     }
 
+    /* ── Void Serpent Overlay ── */
+    #void-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: #040008;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #void-overlay.open { display: flex; }
+    #void-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(200,0,0,0.2);
+      flex-shrink: 0;
+    }
+    #void-close {
+      background: transparent;
+      border: 1px solid rgba(200,0,0,0.3);
+      color: #883333;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: border-color .2s, color .2s, box-shadow .2s;
+    }
+    #void-close:hover { border-color: #cc0000; color: #cc0000; box-shadow: 0 0 10px rgba(200,0,0,0.2); }
+    #void-main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      gap: 0;
+    }
+    #void-canvas-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      min-width: 0;
+    }
+    #void-canvas {
+      display: block;
+      image-rendering: pixelated;
+    }
+    #void-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      border-left: 1px solid rgba(200,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(200,0,0,0.2) transparent;
+    }
+    .void-side-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: #cc0000;
+      letter-spacing: 2px;
+      padding: 10px 14px 6px;
+      border-bottom: 1px solid rgba(200,0,0,0.08);
+      text-shadow: 0 0 6px rgba(200,0,0,0.4);
+    }
+    #void-lobby-panel { padding-bottom: 8px; }
+    #void-lobby-list { padding: 6px 0; }
+    .void-lobby-player {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+    }
+    .void-lobby-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .void-lobby-name { flex: 1; color: #99aabb; }
+    .void-lobby-status { font-size: 8px; color: #334455; letter-spacing: 1px; }
+    .void-lobby-status.ready { color: #cc0000; text-shadow: 0 0 4px rgba(200,0,0,0.4); }
+    #void-ready-btn {
+      display: none;
+      margin: 8px 14px 0;
+      width: calc(100% - 28px);
+      padding: 8px;
+      background: transparent;
+      border: 1px solid rgba(200,0,0,0.5);
+      color: #cc0000;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: background .2s, box-shadow .2s;
+    }
+    #void-ready-btn:hover { background: rgba(200,0,0,0.1); box-shadow: 0 0 14px rgba(200,0,0,0.2); }
+    #void-ready-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .void-countdown-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: #cc0000;
+      text-shadow: 0 0 30px rgba(200,0,0,0.8);
+      text-align: center;
+      padding: 16px;
+      animation: voidPulse .5s ease-in-out infinite alternate;
+    }
+    @keyframes voidPulse { from { opacity:.6; } to { opacity:1; } }
+    #void-scoreboard { padding-bottom: 8px; }
+    .void-score-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      color: #cc0000;
+      letter-spacing: 2px;
+      padding: 10px 14px 6px;
+      border-bottom: 1px solid rgba(200,0,0,0.08);
+    }
+    .void-score-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+    }
+    .void-score-row.dead { opacity: 0.35; }
+    .void-score-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .void-score-name { flex: 1; color: #99aabb; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .void-score-val { color: #cc0000; font-weight: 700; }
+    #void-controls { padding: 10px 14px; border-top: 1px solid rgba(200,0,0,0.08); margin-top: auto; }
+    #void-dpad {
+      display: none;
+      grid-template-columns: repeat(3, 44px);
+      grid-template-rows: repeat(2, 44px);
+      gap: 4px;
+      justify-content: center;
+      padding: 10px;
+      flex-shrink: 0;
+    }
+    .void-dpad-btn {
+      background: rgba(200,0,0,0.08);
+      border: 1px solid rgba(200,0,0,0.25);
+      color: #cc0000;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background .1s;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    .void-dpad-btn:active { background: rgba(200,0,0,0.25); }
+    @media (max-width: 640px) {
+      #void-sidebar { display: none; }
+      #void-dpad { display: grid; }
+      #void-canvas-wrap { padding: 6px; }
+    }
+
     /* ── Chat Widget ── */
     #chat-widget {
       position: fixed;
@@ -723,6 +890,7 @@
       <a href="#projects">PROJECTS</a>
       <a href="#experience">EXPERIENCE</a>
       <a href="#contact">CONTACT</a>
+      <a href="#arcade" style="color:#cc0000;text-shadow:0 0 8px rgba(200,0,0,0.6);">ARCADE</a>
     </div>
   </div>
 </nav>
@@ -1135,6 +1303,50 @@
   </div>
 </section>
 
+<!-- ── ARCADE ─────────────────────────────────────────────────────── -->
+<section id="arcade" style="background:linear-gradient(180deg,var(--bg) 0%,#0a0005 100%);border-top:1px solid rgba(200,0,0,0.15);">
+  <div class="max-w" style="text-align:center;">
+    <p class="section-label" style="color:#cc0000;text-shadow:0 0 8px rgba(200,0,0,0.5);">// ARCADE</p>
+    <div style="font-size:56px;margin-bottom:12px;line-height:1;">☠</div>
+    <h2 class="orb" style="font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#cc0000;text-shadow:0 0 20px rgba(200,0,0,0.5),0 0 60px rgba(200,0,0,0.2);margin-bottom:12px;letter-spacing:4px;">VOID SERPENT</h2>
+    <p class="mono" style="font-size:12px;color:#556677;letter-spacing:3px;margin-bottom:20px;">LAST ONE SLITHERS</p>
+    <p style="color:#445566;max-width:480px;margin:0 auto 36px;line-height:1.8;font-size:13px;">Real-time multiplayer horror snake. Compete against every visitor on this page. The arena shrinks. The Reaper hunts. Only one survives.</p>
+    <button id="void-enter-btn" style="
+      display:inline-flex;align-items:center;gap:10px;
+      padding:14px 32px;
+      background:transparent;
+      border:1px solid rgba(200,0,0,0.6);
+      color:#cc0000;
+      font-family:'Orbitron',sans-serif;
+      font-size:13px;font-weight:700;letter-spacing:3px;
+      cursor:pointer;
+      transition:background .2s,box-shadow .2s;
+      clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+    " onmouseover="this.style.background='rgba(200,0,0,0.1)';this.style.boxShadow='0 0 30px rgba(200,0,0,0.3)'"
+       onmouseout="this.style.background='transparent';this.style.boxShadow='none'">
+      ☠&nbsp;ENTER THE VOID
+    </button>
+    <div style="margin-top:28px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div class="orb" style="font-size:11px;color:#cc0000;margin-bottom:4px;">THE REAPER</div>
+        <div style="font-size:10px;color:#334455;font-family:'JetBrains Mono',monospace;">Spawns at tick 38. Hunts you.</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="orb" style="font-size:11px;color:#cc0000;margin-bottom:4px;">SHRINKING ARENA</div>
+        <div style="font-size:10px;color:#334455;font-family:'JetBrains Mono',monospace;">Walls close every 28 ticks.</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="orb" style="font-size:11px;color:#cc0000;margin-bottom:4px;">CURSED FOOD</div>
+        <div style="font-size:10px;color:#334455;font-family:'JetBrains Mono',monospace;">Reverses your controls.</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="orb" style="font-size:11px;color:#cc0000;margin-bottom:4px;">GHOST TRAILS</div>
+        <div style="font-size:10px;color:#334455;font-family:'JetBrains Mono',monospace;">Dead snakes block the path.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── FOOTER ─────────────────────────────────────────────────────── -->
 <footer style="border-top:1px solid rgba(0,245,255,0.07); padding:28px 0;">
   <div class="max-w" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
@@ -1142,6 +1354,56 @@
     <span class="mono" style="font-size:11px; color:#334455; letter-spacing:1px;">BUILT FROM SCRATCH. LIKE EVERYTHING ELSE.</span>
   </div>
 </footer>
+
+<!-- ── VOID SERPENT GAME OVERLAY ─────────────────────────────────── -->
+<div id="void-overlay">
+  <div id="void-header">
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <span class="orb" style="font-size:16px;color:#cc0000;text-shadow:0 0 16px rgba(200,0,0,0.7);letter-spacing:4px;">☠ VOID SERPENT</span>
+      <span class="mono" style="font-size:9px;color:#443344;letter-spacing:3px;">LAST ONE SLITHERS</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span id="void-player-count" class="mono" style="font-size:10px;color:#cc0000;">0 PLAYERS</span>
+      <button id="void-close">✕ EXIT</button>
+    </div>
+  </div>
+
+  <div id="void-main">
+    <div id="void-canvas-wrap">
+      <canvas id="void-canvas"></canvas>
+    </div>
+    <div id="void-sidebar">
+      <!-- Lobby -->
+      <div id="void-lobby-panel">
+        <div class="void-side-label">PLAYERS IN LOBBY</div>
+        <div id="void-lobby-list"></div>
+        <button id="void-ready-btn">⚡ READY UP</button>
+        <div id="void-waiting-hint" class="mono" style="font-size:9px;color:#334455;margin-top:8px;text-align:center;">Need 2+ players to start</div>
+      </div>
+      <!-- Scoreboard (shown during game) -->
+      <div id="void-scoreboard" style="display:none;"></div>
+      <!-- Controls -->
+      <div id="void-controls">
+        <div class="void-side-label">CONTROLS</div>
+        <div class="mono" style="font-size:9px;color:#445566;line-height:2;">
+          ↑↓←→ &nbsp;or&nbsp; WASD<br>
+          <span style="color:#330022;">☠ Avoid the Reaper</span><br>
+          <span style="color:#220033;">💜 Cursed food = reversed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile d-pad -->
+  <div id="void-dpad">
+    <div></div>
+    <button class="void-dpad-btn" data-dir="up">▲</button>
+    <div></div>
+    <button class="void-dpad-btn" data-dir="left">◄</button>
+    <button class="void-dpad-btn" data-dir="down">▼</button>
+    <button class="void-dpad-btn" data-dir="right">►</button>
+  </div>
+</div>
 
 <!-- ── FLOATING LIMA RADIO PLAYER ────────────────────────────────── -->
 <div id="radio-widget">
@@ -1368,6 +1630,338 @@ enterOverlay.addEventListener('click', () => {
   startRadio();
 });
 
+// ══════════════════════════════════════════════════════════════════════════
+// VOID SERPENT — Client
+// ══════════════════════════════════════════════════════════════════════════
+const VOID_GRID = 26;
+
+let voidState      = null;
+let voidInGame     = false;
+let voidMyColor    = null;
+let voidDeathFlash = 0;
+let voidShake      = 0;
+let voidCursedMsg  = 0;
+let voidRaf        = null;
+let voidOpen       = false;
+
+const voidOverlay    = document.getElementById('void-overlay');
+const voidCanvas     = document.getElementById('void-canvas');
+const voidCtx        = voidCanvas.getContext('2d');
+const voidScoreEl    = document.getElementById('void-scoreboard');
+const voidLobbyList  = document.getElementById('void-lobby-list');
+const voidLobbyPanel = document.getElementById('void-lobby-panel');
+const voidReadyBtn   = document.getElementById('void-ready-btn');
+const voidCountEl    = document.getElementById('void-player-count');
+const voidWaitHint   = document.getElementById('void-waiting-hint');
+
+function openVoid() {
+  voidOpen = true;
+  voidOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  resizeVoidCanvas();
+  if (!voidRaf) voidRaf = requestAnimationFrame(renderVoid);
+
+  const s = ensureVoidSocket();
+  if (s.connected) { s.emit('game_join'); voidInGame = true; }
+  else s.once('connect', () => { s.emit('game_join'); voidInGame = true; });
+}
+
+function closeVoid() {
+  voidOpen = false;
+  voidOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  if (voidInGame && chatSocket) { chatSocket.emit('game_leave'); voidInGame = false; }
+  if (voidRaf) { cancelAnimationFrame(voidRaf); voidRaf = null; }
+  voidState = null;
+  voidReadyBtn.style.display = 'none';
+  voidReadyBtn.disabled = false;
+  voidReadyBtn.textContent = '⚡ READY UP';
+}
+
+function ensureVoidSocket() {
+  if (!chatSocket) connectChat();
+  return chatSocket;
+}
+
+document.getElementById('void-enter-btn').addEventListener('click', openVoid);
+document.getElementById('void-close').addEventListener('click', closeVoid);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && voidOpen) { closeVoid(); return; }
+  if (!voidInGame || !chatSocket) return;
+  const map = {
+    ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right',
+    w:'up', s:'down', a:'left', d:'right',
+    W:'up', S:'down', A:'left', D:'right',
+  };
+  if (map[e.key]) { e.preventDefault(); chatSocket.emit('game_direction', map[e.key]); }
+});
+document.querySelectorAll('.void-dpad-btn').forEach(btn => {
+  btn.addEventListener('click', () => { if (chatSocket) chatSocket.emit('game_direction', btn.dataset.dir); });
+});
+voidReadyBtn.addEventListener('click', () => {
+  if (chatSocket) chatSocket.emit('game_ready');
+  voidReadyBtn.disabled = true;
+  voidReadyBtn.textContent = '⏳ WAITING...';
+});
+
+function resizeVoidCanvas() {
+  const wrap = document.getElementById('void-canvas-wrap');
+  const size = Math.min(wrap.clientWidth - 8, wrap.clientHeight - 8, 580);
+  voidCanvas.width  = size;
+  voidCanvas.height = size;
+}
+window.addEventListener('resize', () => { if (voidOpen) resizeVoidCanvas(); });
+
+// ── Game socket event handlers (called from connectChat) ──────────────────
+function attachVoidEvents(socket) {
+  socket.on('game_joined', (data) => {
+    voidMyColor = data.color;
+  });
+
+  socket.on('game_lobby', (data) => {
+    const n = data.players.length;
+    voidCountEl.textContent = n + (n === 1 ? ' PLAYER' : ' PLAYERS');
+    voidLobbyList.innerHTML = data.players.map(p => `
+      <div class="void-lobby-player">
+        <span class="void-lobby-dot" style="background:${p.color};box-shadow:0 0 5px ${p.color}"></span>
+        <span class="void-lobby-name">${escHtml(p.username)}</span>
+        <span class="void-lobby-status ${p.ready ? 'ready' : ''}">${p.ready ? '● RDY' : '○ ---'}</span>
+      </div>`).join('');
+    voidReadyBtn.style.display = n >= 2 ? 'block' : 'none';
+    voidWaitHint.style.display = n < 2 ? 'block' : 'none';
+    voidLobbyPanel.style.display = 'block';
+    voidScoreEl.style.display = 'none';
+  });
+
+  socket.on('game_countdown', (n) => {
+    voidLobbyList.innerHTML = `<div class="void-countdown-num">${n}</div>`;
+    voidReadyBtn.style.display = 'none';
+  });
+
+  socket.on('game_start', (state) => {
+    voidState = state;
+    voidLobbyPanel.style.display = 'none';
+    voidScoreEl.style.display = 'block';
+    updateVoidScore(state);
+  });
+
+  socket.on('game_state', (state) => {
+    voidState = state;
+    updateVoidScore(state);
+  });
+
+  socket.on('game_event', (evt) => {
+    if (evt.type === 'death') {
+      const isMe = evt.color === voidMyColor;
+      if (isMe) { voidDeathFlash = 28; voidShake = 18; }
+      if (chatOpen) appendSys(`☠ ${evt.username} was eliminated`);
+    }
+    if (evt.type === 'reaper_spawn') {
+      voidDeathFlash = 10;
+      if (chatOpen) appendSys('💀 THE REAPER HAS SPAWNED');
+    }
+    if (evt.type === 'cursed') { voidCursedMsg = 45; }
+    if (evt.type === 'shrink') { voidDeathFlash = 5; }
+  });
+
+  socket.on('game_over', (data) => {
+    if (voidState) voidState = { ...voidState, status: 'gameover', winner: data.winner };
+    updateVoidScore({ players: data.scores });
+    if (data.winner && chatOpen) appendSys(`👑 ${data.winner.username} WINS THE VOID`);
+    setTimeout(() => {
+      if (!voidOpen) return;
+      voidLobbyPanel.style.display = 'block';
+      voidScoreEl.style.display = 'none';
+      voidReadyBtn.disabled = false;
+      voidReadyBtn.style.display = 'block';
+      voidReadyBtn.textContent = '⚡ PLAY AGAIN';
+      if (chatSocket) chatSocket.emit('game_reset_ready');
+    }, 3500);
+  });
+}
+
+function updateVoidScore(state) {
+  if (!state.players) return;
+  const sorted = [...state.players].sort((a, b) => b.score - a.score);
+  voidScoreEl.innerHTML = `
+    <div class="void-score-title">☠ LEADERBOARD</div>
+    ${sorted.map(p => `
+      <div class="void-score-row ${p.alive ? '' : 'dead'}">
+        <span class="void-score-dot" style="background:${p.color};box-shadow:0 0 4px ${p.color}"></span>
+        <span class="void-score-name">${escHtml(p.username)}</span>
+        <span class="void-score-val">${p.score}</span>
+      </div>`).join('')}`;
+}
+
+// ── Canvas renderer ──────────────────────────────────────────────────────────
+function hexRgba(hex, a) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+function renderVoid() {
+  voidRaf = requestAnimationFrame(renderVoid);
+  if (!voidOpen) return;
+
+  const ctx  = voidCtx;
+  const cs   = voidCanvas.width;
+  const cell = cs / VOID_GRID;
+  const now  = Date.now();
+
+  ctx.save();
+  if (voidShake > 0) {
+    ctx.translate((Math.random()-.5)*voidShake*.6, (Math.random()-.5)*voidShake*.6);
+    voidShake--;
+  }
+
+  // Background
+  ctx.fillStyle = '#040008';
+  ctx.fillRect(0, 0, cs, cs);
+
+  if (!voidState) {
+    ctx.fillStyle = 'rgba(150,0,0,0.5)';
+    ctx.font = `bold ${Math.floor(cell*.9)}px 'Orbitron',sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('AWAITING PLAYERS...', cs/2, cs/2);
+    ctx.restore(); return;
+  }
+
+  // Grid
+  ctx.strokeStyle = 'rgba(50,0,0,0.5)'; ctx.lineWidth = .5;
+  for (let i = 0; i <= VOID_GRID; i++) {
+    ctx.beginPath(); ctx.moveTo(i*cell,0); ctx.lineTo(i*cell,cs); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,i*cell); ctx.lineTo(cs,i*cell); ctx.stroke();
+  }
+
+  const ar = voidState.arena || {x1:0,y1:0,x2:VOID_GRID-1,y2:VOID_GRID-1};
+
+  // Dead zone outside arena
+  ctx.fillStyle = 'rgba(15,0,0,0.65)';
+  ctx.fillRect(0, 0, cs, ar.y1*cell);
+  ctx.fillRect(0, (ar.y2+1)*cell, cs, cs-(ar.y2+1)*cell);
+  ctx.fillRect(0, ar.y1*cell, ar.x1*cell, (ar.y2-ar.y1+1)*cell);
+  ctx.fillRect((ar.x2+1)*cell, ar.y1*cell, cs-(ar.x2+1)*cell, (ar.y2-ar.y1+1)*cell);
+
+  // Arena border — pulsing red
+  const pulse = .55 + .45*Math.sin(now/280);
+  ctx.strokeStyle = `rgba(200,0,0,${pulse})`; ctx.lineWidth = 2;
+  ctx.strokeRect(ar.x1*cell, ar.y1*cell, (ar.x2-ar.x1+1)*cell, (ar.y2-ar.y1+1)*cell);
+
+  // Ghost trails
+  (voidState.ghosts||[]).forEach(g => {
+    g.body.forEach((s,i) => {
+      const a = (.22-.005*i) * (1-i/g.body.length);
+      if (a <= 0) return;
+      ctx.fillStyle = hexRgba(g.color, Math.max(0,a));
+      ctx.fillRect(s.x*cell+1,s.y*cell+1,cell-2,cell-2);
+    });
+  });
+
+  // Food
+  (voidState.food||[]).forEach(f => {
+    const fp = .5+.5*Math.sin(now/240+f.x*.7+f.y*.3);
+    const r  = cell*.27+cell*.07*fp;
+    const cx = f.x*cell+cell/2, cy = f.y*cell+cell/2;
+    ctx.shadowBlur = 10;
+    if (f.cursed) {
+      ctx.fillStyle  = `rgba(170,0,240,${.7+.3*fp})`;
+      ctx.shadowColor = '#9900ff';
+    } else {
+      ctx.fillStyle  = `rgba(220,0,0,${.7+.3*fp})`;
+      ctx.shadowColor = '#ff2200';
+    }
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+  });
+
+  // Player snakes
+  (voidState.players||[]).forEach(p => {
+    if (!p.alive || !p.body.length) return;
+    p.body.forEach((s,i) => {
+      const isHead = i===0;
+      const pad    = isHead ? .5 : Math.min(1.5+i*.06, cell*.3);
+      const a      = isHead ? 1  : Math.max(.35, 1-i*.022);
+
+      if (isHead) {
+        ctx.shadowColor = p.cursed ? '#9900ff' : p.color;
+        ctx.shadowBlur  = p.cursed ? 16 : 10;
+        ctx.fillStyle   = p.cursed ? '#9900ff' : p.color;
+      } else {
+        ctx.shadowBlur = 0;
+        ctx.fillStyle  = hexRgba(p.color, a);
+      }
+      ctx.fillRect(s.x*cell+pad, s.y*cell+pad, cell-pad*2, cell-pad*2);
+      ctx.shadowBlur = 0;
+
+      if (isHead) {
+        // Eyes
+        const ex = s.x*cell+cell/2, ey = s.y*cell+cell/2;
+        ctx.fillStyle = '#000';
+        ctx.beginPath(); ctx.arc(ex-cell*.17, ey-cell*.12, cell*.09, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(ex+cell*.17, ey-cell*.12, cell*.09, 0, Math.PI*2); ctx.fill();
+      }
+    });
+  });
+
+  // Reaper
+  if (voidState.reaper) {
+    const r  = voidState.reaper;
+    const rp = .65+.35*Math.sin(now/130);
+    ctx.shadowColor = '#ffffff'; ctx.shadowBlur = 14;
+    ctx.fillStyle   = `rgba(255,255,255,${rp})`;
+    ctx.fillRect(r.x*cell+1, r.y*cell+1, cell-2, cell-2);
+    ctx.shadowBlur = 0;
+    const rx = r.x*cell+cell/2, ry = r.y*cell+cell/2;
+    ctx.strokeStyle = '#cc0000'; ctx.lineWidth = 1.2;
+    [[-.28,-.2,-.12,0],[-.12,-.2,-.28,0],[.12,-.2,.28,0],[.28,-.2,.12,0]].forEach(([ax,ay,bx,by])=>{
+      ctx.beginPath();
+      ctx.moveTo(rx+ax*cell, ry+ay*cell);
+      ctx.lineTo(rx+bx*cell, ry+by*cell);
+      ctx.stroke();
+    });
+  }
+
+  // Death flash
+  if (voidDeathFlash > 0) {
+    ctx.fillStyle = `rgba(200,0,0,${(voidDeathFlash/28)*.55})`;
+    ctx.fillRect(0,0,cs,cs);
+    voidDeathFlash--;
+  }
+
+  // Cursed overlay
+  if (voidCursedMsg > 0) {
+    const a = Math.min(1, voidCursedMsg/12);
+    ctx.fillStyle = `rgba(140,0,220,${a*.6})`;
+    ctx.fillRect(0,0,cs,cs);
+    ctx.fillStyle = `rgba(255,255,255,${a})`;
+    ctx.font = `bold ${Math.floor(cell*1.6)}px 'Orbitron',sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('CURSED!', cs/2, cs/2);
+    voidCursedMsg--;
+  }
+
+  // Game over overlay
+  if (voidState.status === 'gameover') {
+    ctx.fillStyle = 'rgba(0,0,0,.75)';
+    ctx.fillRect(0,0,cs,cs);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#cc0000';
+    ctx.font = `bold ${Math.floor(cell*2)}px 'Orbitron',sans-serif`;
+    ctx.fillText('GAME OVER', cs/2, cs/2-cell*1.8);
+    if (voidState.winner) {
+      ctx.fillStyle = voidState.winner.color;
+      ctx.font = `${Math.floor(cell*1.1)}px 'Orbitron',sans-serif`;
+      ctx.fillText(voidState.winner.username + ' SURVIVES', cs/2, cs/2);
+    } else {
+      ctx.fillStyle = '#445566';
+      ctx.font = `${Math.floor(cell*.85)}px 'Orbitron',sans-serif`;
+      ctx.fillText('THE VOID CLAIMS ALL', cs/2, cs/2);
+    }
+  }
+
+  ctx.restore();
+}
+
 // ── Live Chat Widget ──────────────────────────────────────────────────────
 // TODO: Replace with your Railway URL after deploying portfolio-chat-server
 const CHAT_SERVER = 'https://portfolio-chat-server-production-32fe.up.railway.app';
@@ -1412,6 +2006,7 @@ function appendSys(text) {
 function connectChat() {
   if (chatSocket) return;
   chatSocket = io(CHAT_SERVER, { transports: ['websocket', 'polling'] });
+  attachVoidEvents(chatSocket);
 
   chatSocket.on('connect', () => {
     chatBtn.classList.add('active');
