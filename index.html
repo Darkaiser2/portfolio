@@ -390,13 +390,12 @@
       bottom: 28px; right: 28px;
       z-index: 100;
       display: flex;
-      flex-direction: column-reverse;
+      flex-direction: column;
       align-items: flex-end;
-      gap: 8px;
     }
     #radio-btn {
       width: 56px; height: 56px;
-      background: rgba(4, 0, 14, 0.9);
+      background: rgba(4,0,14,0.9);
       border: 1px solid rgba(0,245,255,0.45);
       color: var(--cyan);
       cursor: pointer;
@@ -404,7 +403,7 @@
       backdrop-filter: blur(16px);
       transition: border-color .3s, box-shadow .3s;
       outline: none;
-      clip-path: polygon(14px 0%, 100% 0%, 100% 14px, 100% 100%, calc(100% - 14px) 100%, 0% 100%, 0% 0%, 14px 0%);
+      clip-path: polygon(14px 0%,100% 0%,100% 14px,100% 100%,calc(100% - 14px) 100%,0% 100%,0% 0%,14px 0%);
     }
     #radio-btn:hover {
       border-color: var(--cyan);
@@ -420,38 +419,53 @@
       100% { box-shadow: 0 0 0 0    rgba(0,245,255,0);    }
     }
     #radio-panel {
-      background: rgba(4,0,14,0.95);
+      position: absolute;
+      bottom: 64px; right: 0;
+      width: 250px;
+      background: rgba(4,0,14,0.97);
       border: 1px solid rgba(0,245,255,0.22);
-      padding: 10px 14px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: #667788;
-      letter-spacing: 1px;
-      line-height: 1.7;
-      white-space: nowrap;
       backdrop-filter: blur(16px);
-      pointer-events: none;
+      border-radius: 2px;
       opacity: 0;
-      transform: translateY(4px);
+      pointer-events: none;
+      transform: translateY(8px);
       transition: opacity .2s, transform .2s;
     }
-    #radio-widget:hover #radio-panel { opacity: 1; transform: translateY(0); }
-    #radio-panel-name {
-      color: var(--cyan);
-      font-size: 11px;
-      font-weight: 600;
-      text-shadow: 0 0 8px var(--cyan);
+    #radio-panel.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    #radio-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(0,245,255,0.1);
     }
-    #radio-dot {
-      display: inline-block;
+    .radio-stn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(0,245,255,0.05);
+      transition: background .15s;
+    }
+    .radio-stn:last-child { border-bottom: none; }
+    .radio-stn:hover { background: rgba(0,245,255,0.04); }
+    .radio-stn.playing { background: rgba(0,245,255,0.07); }
+    .radio-stn.disabled { opacity: 0.3; cursor: not-allowed; }
+    .radio-stn.disabled:hover { background: transparent; }
+    .radio-stn-name { font-size: 10px; font-weight: 600; color: var(--cyan); letter-spacing: 1px; text-shadow: 0 0 6px rgba(0,245,255,0.3); }
+    .radio-stn.disabled .radio-stn-name { color: #445566; text-shadow: none; }
+    .radio-stn-genre { font-size: 8px; color: #334455; letter-spacing: 1px; margin-top: 2px; }
+    .radio-stn-freq  { font-size: 8px; color: #334455; letter-spacing: 1px; }
+    .radio-stn-dot {
       width: 6px; height: 6px;
       border-radius: 50%;
-      background: #334455;
-      margin-right: 5px;
-      vertical-align: middle;
-      transition: background .3s, box-shadow .3s;
+      background: #1a2a3a;
+      flex-shrink: 0;
+      margin-left: 8px;
     }
-    #radio-dot.live {
+    .radio-stn-dot.live {
       background: var(--cyan);
       box-shadow: 0 0 6px var(--cyan);
       animation: dotBlink 1.2s ease-in-out infinite;
@@ -1129,10 +1143,16 @@
   </div>
 </footer>
 
-<!-- ── FLOATING PERU RADIO PLAYER ────────────────────────────────── -->
+<!-- ── FLOATING LIMA RADIO PLAYER ────────────────────────────────── -->
 <div id="radio-widget">
-  <button id="radio-btn" aria-label="Toggle Peru radio stream">
-    <!-- Radio tower icon -->
+  <div id="radio-panel">
+    <div id="radio-panel-header">
+      <span class="orb" style="font-size:10px;color:var(--cyan);text-shadow:0 0 8px rgba(0,245,255,0.6);letter-spacing:2px;">LIMA RADIO</span>
+      <span style="font-size:9px;color:#334455;font-family:'JetBrains Mono',monospace;">PERU 🇵🇪</span>
+    </div>
+    <div id="radio-station-list"></div>
+  </div>
+  <button id="radio-btn" aria-label="Toggle Lima radio">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4.9 4.9a9.5 9.5 0 0 0 0 14.2"/>
       <path d="M19.1 4.9a9.5 9.5 0 0 1 0 14.2"/>
@@ -1142,13 +1162,8 @@
       <line x1="12" y1="13.5" x2="12" y2="21"/>
     </svg>
   </button>
-  <div id="radio-panel">
-    <div id="radio-panel-name">RITMO ROMANTICA</div>
-    <div style="font-size:9px; color:#334455; margin-bottom:2px;">LIMA, PERU</div>
-    <div><span id="radio-dot"></span><span id="radio-status">OFFLINE</span></div>
-  </div>
 </div>
-<audio id="radio-audio" preload="none" src="https://us-b4-p-e-cg11-audio.cdn.mdstrm.com/live-audio-aw/6839e2376607bdf6b2fcde27"></audio>
+<audio id="radio-audio" preload="none"></audio>
 
 <!-- ── FLOATING LIVE CHAT ─────────────────────────────────────────────────── -->
 <div id="chat-widget">
@@ -1177,36 +1192,114 @@
 </div>
 
 <script>
-// ── Peru Radio Player — Ritmo Romantica 99.7 FM Lima ─────────────────────
-const radioBtn    = document.getElementById('radio-btn');
-const radioAudio  = document.getElementById('radio-audio');
-const radioDot    = document.getElementById('radio-dot');
-const radioStatus = document.getElementById('radio-status');
-let radioLive = false;
+// ── Lima Peru Radio — Multi-station player ────────────────────────────────
+// To add a station: find its stream URL via browser devtools (Network tab →
+// filter by "audio" or "mp3" while the station plays on their official site),
+// then add an entry to STATIONS below.
+const STATIONS = [
+  {
+    name:  'RITMO ROMÁNTICA',
+    freq:  '99.7 FM',
+    genre: 'ROMANTIC',
+    src:   'https://us-b4-p-e-cg11-audio.cdn.mdstrm.com/live-audio-aw/6839e2376607bdf6b2fcde27'
+  },
+  {
+    name:  'STUDIO 92',
+    freq:  '92.5 FM',
+    genre: 'POP / ELECTRO',
+    src:   ''  // TODO: paste stream URL here
+  },
+  {
+    name:  'LA KARIBEÑA',
+    freq:  '94.3 FM',
+    genre: 'CUMBIA / SALSA',
+    src:   ''  // TODO: paste stream URL here
+  },
+  {
+    name:  'OXÍGENO',
+    freq:  '102.1 FM',
+    genre: 'ROCK',
+    src:   ''  // TODO: paste stream URL here
+  },
+  {
+    name:  'RPP NOTICIAS',
+    freq:  '89.7 FM',
+    genre: 'NEWS',
+    src:   ''  // TODO: paste stream URL here
+  },
+];
 
-function startRadio() {
+const radioBtn       = document.getElementById('radio-btn');
+const radioAudio     = document.getElementById('radio-audio');
+const radioPanel     = document.getElementById('radio-panel');
+const stationList    = document.getElementById('radio-station-list');
+let   radioOpen      = false;
+let   playingIdx     = -1;
+
+// Build station rows
+STATIONS.forEach((stn, i) => {
+  const row = document.createElement('div');
+  row.className = 'radio-stn' + (stn.src ? '' : ' disabled');
+  row.innerHTML = `
+    <div>
+      <div class="radio-stn-name">${stn.name}</div>
+      <div class="radio-stn-genre">${stn.genre}</div>
+    </div>
+    <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+      <div class="radio-stn-freq">${stn.freq}</div>
+      <span class="radio-stn-dot" id="stn-dot-${i}"></span>
+    </div>`;
+  if (stn.src) row.addEventListener('click', () => playStn(i));
+  stationList.appendChild(row);
+});
+
+function playStn(i) {
+  const rows = stationList.querySelectorAll('.radio-stn');
+  // Click same station again → stop
+  if (playingIdx === i) {
+    radioAudio.pause(); radioAudio.load();
+    radioBtn.classList.remove('live');
+    document.getElementById(`stn-dot-${i}`).classList.remove('live');
+    rows[i].classList.remove('playing');
+    playingIdx = -1;
+    return;
+  }
+  // Stop previous
+  if (playingIdx >= 0) {
+    radioAudio.pause(); radioAudio.load();
+    document.getElementById(`stn-dot-${playingIdx}`).classList.remove('live');
+    rows[playingIdx].classList.remove('playing');
+    radioBtn.classList.remove('live');
+  }
+  // Play new
+  radioAudio.src = STATIONS[i].src;
   radioAudio.load();
   radioAudio.play().then(() => {
-    radioLive = true;
+    playingIdx = i;
     radioBtn.classList.add('live');
-    radioDot.classList.add('live');
-    radioStatus.textContent = 'LIVE';
-  }).catch(() => {
-    radioStatus.textContent = 'ERROR';
-  });
+    document.getElementById(`stn-dot-${i}`).classList.add('live');
+    rows[i].classList.add('playing');
+  }).catch(() => { playingIdx = -1; });
 }
 
-function stopRadio() {
-  radioAudio.pause();
-  radioAudio.load(); // reset buffer / stop buffering
-  radioLive = false;
-  radioBtn.classList.remove('live');
-  radioDot.classList.remove('live');
-  radioStatus.textContent = 'OFFLINE';
+function startRadio() {
+  // Called by enter-overlay click — open panel and auto-play first station
+  radioOpen = true;
+  radioPanel.classList.add('open');
+  if (playingIdx < 0) playStn(0);
 }
 
 radioBtn.addEventListener('click', () => {
-  radioLive ? stopRadio() : startRadio();
+  radioOpen = !radioOpen;
+  radioPanel.classList.toggle('open', radioOpen);
+});
+
+// Close panel when clicking outside
+document.addEventListener('click', (e) => {
+  if (!document.getElementById('radio-widget').contains(e.target)) {
+    radioOpen = false;
+    radioPanel.classList.remove('open');
+  }
 });
 
 // ── Splash canvas: matrix code rain ──────────────────────────────────────
