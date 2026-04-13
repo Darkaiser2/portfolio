@@ -8,6 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2304000e' rx='4'/%3E%3Cline x1='7' y1='25' x2='25' y2='7' stroke='%2300f5ff' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpolygon points='25,7 17,9 23,15' fill='%2300f5ff'/%3E%3Cline x1='4' y1='21' x2='19' y2='21' stroke='%23ff2a7f' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='19' cy='21' r='2' fill='%23ff2a7f'/%3E%3Ccircle cx='4' cy='21' r='1.5' fill='%23ff2a7f' opacity='0.6'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <style>
     :root {
       --cyan:    #00f5ff;
@@ -477,6 +478,200 @@
       border-bottom:2px solid var(--pink);
       border-right:2px solid var(--pink);
     }
+
+    /* ── Chat Widget ── */
+    #chat-widget {
+      position: fixed;
+      bottom: 28px; left: 28px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    #chat-btn {
+      width: 56px; height: 56px;
+      background: rgba(4,0,14,0.9);
+      border: 1px solid rgba(255,42,127,0.45);
+      border-radius: 2px;
+      color: var(--pink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      outline: none;
+      position: relative;
+      clip-path: polygon(14px 0%,100% 0%,100% 14px,100% 100%,calc(100% - 14px) 100%,0% 100%,0% 0%,14px 0%);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    #chat-btn:hover {
+      border-color: var(--pink);
+      box-shadow: 0 0 20px rgba(255,42,127,0.4), inset 0 0 20px rgba(255,42,127,0.05);
+    }
+    #chat-btn.active {
+      border-color: var(--pink);
+      animation: pinkPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pinkPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(255,42,127,0.4); }
+      70%      { box-shadow: 0 0 0 12px rgba(255,42,127,0); }
+    }
+    #chat-count-badge {
+      position: absolute;
+      top: 5px; right: 5px;
+      width: 16px; height: 16px;
+      background: var(--pink);
+      border-radius: 50%;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    #chat-count-badge.visible { opacity: 1; }
+    #chat-panel {
+      position: absolute;
+      bottom: 64px; left: 0;
+      width: 300px;
+      background: rgba(4,0,14,0.97);
+      border: 1px solid rgba(255,42,127,0.25);
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .2s, transform .2s;
+    }
+    #chat-panel.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    #chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255,42,127,0.15);
+    }
+    #chat-online {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #445566;
+      transition: color .3s, text-shadow .3s;
+    }
+    #chat-online.live { color: var(--pink); text-shadow: 0 0 6px rgba(255,42,127,0.5); }
+    #chat-username-bar {
+      padding: 5px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #445566;
+      border-bottom: 1px solid rgba(255,42,127,0.08);
+    }
+    #chat-myname {
+      color: var(--pink);
+      cursor: pointer;
+      text-shadow: 0 0 6px rgba(255,42,127,0.4);
+    }
+    #chat-myname:hover { text-decoration: underline; }
+    #chat-rename-row {
+      display: none;
+      gap: 6px;
+      padding: 6px 10px;
+      border-bottom: 1px solid rgba(255,42,127,0.1);
+    }
+    #chat-rename-row.visible { display: flex; }
+    #chat-rename-input {
+      flex: 1;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,42,127,0.2);
+      color: #aabbcc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 4px 7px;
+      outline: none;
+      border-radius: 1px;
+    }
+    #chat-rename-input:focus { border-color: rgba(255,42,127,0.5); }
+    #chat-rename-ok {
+      background: transparent;
+      border: 1px solid rgba(255,42,127,0.35);
+      color: var(--pink);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 4px 8px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    #chat-rename-ok:hover { background: rgba(255,42,127,0.1); }
+    #chat-messages {
+      height: 220px;
+      overflow-y: auto;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,42,127,0.25) transparent;
+    }
+    #chat-messages::-webkit-scrollbar { width: 3px; }
+    #chat-messages::-webkit-scrollbar-thumb { background: rgba(255,42,127,0.25); }
+    .chat-msg {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    .chat-msg-user { color: var(--pink); text-shadow: 0 0 4px rgba(255,42,127,0.4); margin-right: 5px; }
+    .chat-msg-text { color: #99aabb; }
+    .chat-msg-me .chat-msg-user { color: var(--cyan); text-shadow: 0 0 4px rgba(0,245,255,0.4); }
+    .chat-msg-me .chat-msg-text { color: #c8d8e8; }
+    .chat-sys {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #283848;
+      font-style: italic;
+    }
+    #chat-input-row {
+      display: flex;
+      gap: 6px;
+      padding: 8px 10px;
+      border-top: 1px solid rgba(255,42,127,0.15);
+    }
+    #chat-input {
+      flex: 1;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,42,127,0.2);
+      color: #aabbcc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 5px 8px;
+      outline: none;
+      border-radius: 1px;
+    }
+    #chat-input:focus { border-color: rgba(255,42,127,0.5); box-shadow: 0 0 8px rgba(255,42,127,0.12); }
+    #chat-input::placeholder { color: #2a3a4a; }
+    #chat-send {
+      background: transparent;
+      border: 1px solid rgba(255,42,127,0.35);
+      color: var(--pink);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 5px 8px;
+      cursor: pointer;
+      transition: background .2s, box-shadow .2s;
+    }
+    #chat-send:hover { background: rgba(255,42,127,0.1); box-shadow: 0 0 10px rgba(255,42,127,0.2); }
+
   </style>
 </head>
 <body>
@@ -955,6 +1150,32 @@
 </div>
 <audio id="radio-audio" preload="none" src="https://us-b4-p-e-cg11-audio.cdn.mdstrm.com/live-audio-aw/6839e2376607bdf6b2fcde27"></audio>
 
+<!-- ── FLOATING LIVE CHAT ─────────────────────────────────────────────────── -->
+<div id="chat-widget">
+  <div id="chat-panel">
+    <div id="chat-header">
+      <span class="orb" style="font-size:10px;color:var(--pink);text-shadow:0 0 8px rgba(255,42,127,0.6);letter-spacing:2px;">LIVE CHAT</span>
+      <span id="chat-online">0 ONLINE</span>
+    </div>
+    <div id="chat-username-bar">YOU:&nbsp;<span id="chat-myname" title="Click to rename">---</span></div>
+    <div id="chat-rename-row">
+      <input id="chat-rename-input" type="text" placeholder="NEW HANDLE..." maxlength="16" autocomplete="off" />
+      <button id="chat-rename-ok">OK</button>
+    </div>
+    <div id="chat-messages"></div>
+    <div id="chat-input-row">
+      <input id="chat-input" type="text" placeholder="ENTER MESSAGE..." maxlength="200" autocomplete="off" />
+      <button id="chat-send">SEND</button>
+    </div>
+  </div>
+  <button id="chat-btn" aria-label="Toggle live chat">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    <span id="chat-count-badge">0</span>
+  </button>
+</div>
+
 <script>
 // ── Peru Radio Player — Ritmo Romantica 99.7 FM Lima ─────────────────────
 const radioBtn    = document.getElementById('radio-btn');
@@ -1035,6 +1256,123 @@ enterOverlay.addEventListener('click', () => {
   enterOverlay.addEventListener('transitionend', () => enterOverlay.remove(), { once: true });
   startRadio();
 });
+
+// ── Live Chat Widget ──────────────────────────────────────────────────────
+// TODO: Replace with your Railway URL after deploying portfolio-chat-server
+const CHAT_SERVER = 'https://portfolio-chat-server-production-32fe.up.railway.app';
+
+let chatSocket   = null;
+let chatOpen     = false;
+let myUsername   = '';
+
+const chatBtn         = document.getElementById('chat-btn');
+const chatPanel       = document.getElementById('chat-panel');
+const chatMessages    = document.getElementById('chat-messages');
+const chatInput       = document.getElementById('chat-input');
+const chatSend        = document.getElementById('chat-send');
+const chatOnline      = document.getElementById('chat-online');
+const chatMyName      = document.getElementById('chat-myname');
+const chatBadge       = document.getElementById('chat-count-badge');
+const chatRenameRow   = document.getElementById('chat-rename-row');
+const chatRenameInput = document.getElementById('chat-rename-input');
+const chatRenameOk    = document.getElementById('chat-rename-ok');
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function appendMsg(msg) {
+  const isMe = msg.user === myUsername;
+  const el = document.createElement('div');
+  el.className = 'chat-msg' + (isMe ? ' chat-msg-me' : '');
+  el.innerHTML = `<span class="chat-msg-user">${escHtml(msg.user)}</span><span class="chat-msg-text">${escHtml(msg.text)}</span>`;
+  chatMessages.appendChild(el);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function appendSys(text) {
+  const el = document.createElement('div');
+  el.className = 'chat-sys';
+  el.textContent = '— ' + text;
+  chatMessages.appendChild(el);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function connectChat() {
+  if (chatSocket) return;
+  chatSocket = io(CHAT_SERVER, { transports: ['websocket', 'polling'] });
+
+  chatSocket.on('connect', () => {
+    chatBtn.classList.add('active');
+  });
+
+  chatSocket.on('disconnect', () => {
+    chatBtn.classList.remove('active');
+    chatOnline.textContent = '0 ONLINE';
+    chatOnline.classList.remove('live');
+    chatBadge.classList.remove('visible');
+  });
+
+  chatSocket.on('assigned_username', (name) => {
+    myUsername = name;
+    chatMyName.textContent = name;
+  });
+
+  chatSocket.on('history', (msgs) => {
+    chatMessages.innerHTML = '';
+    msgs.forEach(appendMsg);
+  });
+
+  chatSocket.on('message', appendMsg);
+
+  chatSocket.on('sys_msg', (data) => {
+    appendSys(data.text);
+  });
+
+  chatSocket.on('user_count', (n) => {
+    chatOnline.textContent = n + ' ONLINE';
+    chatOnline.classList.toggle('live', n > 0);
+    chatBadge.textContent = n;
+    chatBadge.classList.toggle('visible', n > 1);
+  });
+}
+
+function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text || !chatSocket) return;
+  chatSocket.emit('message', text);
+  chatInput.value = '';
+}
+
+chatBtn.addEventListener('click', () => {
+  chatOpen = !chatOpen;
+  chatPanel.classList.toggle('open', chatOpen);
+  if (chatOpen && !chatSocket) connectChat();
+  if (chatOpen) setTimeout(() => chatInput.focus(), 220);
+});
+
+chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
+chatSend.addEventListener('click', sendMessage);
+
+chatMyName.addEventListener('click', () => {
+  chatRenameRow.classList.toggle('visible');
+  if (chatRenameRow.classList.contains('visible')) {
+    chatRenameInput.value = '';
+    chatRenameInput.focus();
+  }
+});
+
+function applyRename() {
+  const name = chatRenameInput.value.trim();
+  if (name.length >= 2 && chatSocket) {
+    chatSocket.emit('set_username', name);
+    chatRenameRow.classList.remove('visible');
+    chatRenameInput.value = '';
+  }
+}
+
+chatRenameOk.addEventListener('click', applyRename);
+chatRenameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') applyRename(); });
 </script>
 
 </body>
