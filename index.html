@@ -634,30 +634,35 @@
     #void-controls { padding: 10px 14px; border-top: 1px solid rgba(200,0,0,0.08); margin-top: auto; }
     #void-dpad {
       display: none;
-      grid-template-columns: repeat(3, 44px);
-      grid-template-rows: repeat(2, 44px);
-      gap: 4px;
+      grid-template-columns: repeat(3, 56px);
+      grid-template-rows: repeat(2, 56px);
+      gap: 6px;
       justify-content: center;
-      padding: 10px;
+      padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
       flex-shrink: 0;
+      background: rgba(4,0,8,0.95);
+      border-top: 1px solid rgba(200,0,0,0.15);
     }
     .void-dpad-btn {
       background: rgba(200,0,0,0.08);
-      border: 1px solid rgba(200,0,0,0.25);
+      border: 1px solid rgba(200,0,0,0.3);
       color: #cc0000;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
-      border-radius: 2px;
-      transition: background .1s;
+      border-radius: 4px;
+      transition: background .08s;
       user-select: none;
       -webkit-user-select: none;
       touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
-    .void-dpad-btn:active { background: rgba(200,0,0,0.25); }
+    .void-dpad-btn:active,
+    .void-dpad-btn.pressed { background: rgba(200,0,0,0.3); box-shadow: 0 0 10px rgba(200,0,0,0.3); }
     @media (max-width: 640px) {
-      #void-sidebar { display: none; }
-      #void-dpad { display: grid; }
-      #void-canvas-wrap { padding: 6px; }
+      #void-sidebar  { display: none; }
+      #void-dpad     { display: grid; }
+      #void-canvas-wrap { padding: 4px; }
+      #void-header   { padding: 8px 12px; }
     }
 
     /* ── Chat Widget ── */
@@ -1692,6 +1697,14 @@ document.addEventListener('keydown', (e) => {
   if (map[e.key]) { e.preventDefault(); chatSocket.emit('game_direction', map[e.key]); }
 });
 document.querySelectorAll('.void-dpad-btn').forEach(btn => {
+  // touchstart for instant response on mobile (no 300ms delay)
+  btn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    btn.classList.add('pressed');
+    if (chatSocket) chatSocket.emit('game_direction', btn.dataset.dir);
+  }, { passive: false });
+  btn.addEventListener('touchend', () => btn.classList.remove('pressed'));
+  // fallback for desktop
   btn.addEventListener('click', () => { if (chatSocket) chatSocket.emit('game_direction', btn.dataset.dir); });
 });
 voidReadyBtn.addEventListener('click', () => {
@@ -1701,10 +1714,13 @@ voidReadyBtn.addEventListener('click', () => {
 });
 
 function resizeVoidCanvas() {
-  const wrap = document.getElementById('void-canvas-wrap');
-  const size = Math.min(wrap.clientWidth - 8, wrap.clientHeight - 8, 580);
-  voidCanvas.width  = size;
-  voidCanvas.height = size;
+  const wrap  = document.getElementById('void-canvas-wrap');
+  const dpad  = document.getElementById('void-dpad');
+  const dpadH = (dpad && getComputedStyle(dpad).display !== 'none') ? dpad.offsetHeight : 0;
+  const avail = wrap.clientHeight - dpadH - 8;
+  const size  = Math.min(wrap.clientWidth - 8, avail, 580);
+  voidCanvas.width  = Math.max(size, 200);
+  voidCanvas.height = Math.max(size, 200);
 }
 window.addEventListener('resize', () => { if (voidOpen) resizeVoidCanvas(); });
 
